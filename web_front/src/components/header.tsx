@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import {
   Menubar,
   MenubarContent,
@@ -7,33 +8,26 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@/components/ui/menubar"
+} from "@/components/ui/menubar";
+import { ModeToggle } from './ui/mode-toggle';
 
-
-export default function Header(){
+export default function Header() {
   return (
-    <header className="p-4 shadow-header">
+    <header className="p-4 shadow-header bg-white bg-opacity-50">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-gray-500 text-2xl">Meu Site</h1>
+        {/* Logo for light mode */}
+        <Image src={"/image/logo-black.png"} width={192} height={192} className="dark:hidden" alt={''}/>
+        {/* Logo for dark mode */}
+        <Image src={"/image/logo-white.png"} width={192} height={192} className="hidden dark:block" alt={''}/>
+        
         <nav>
-          {/* <ul className="flex space-x-4">
-            <li>
-              <a href="/" className="text-gray-500 hover:underline">Home</a>
-            </li>
-            <li>
-              <a href="/about" className="text-gray-500 hover:underline">Sobre</a>
-            </li>
-            <li>
-              <a href="/contact" className="text-gray-500 hover:underline">Contato</a>
-            </li>
-          </ul> */}
           <Menubar>
             <MenubarMenu>
               <MenubarTrigger>DashBoard</MenubarTrigger>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Maquinas</MenubarTrigger>
+              <MenubarTrigger>Maquinas</MenubarTrigger>
               <MenubarContent>
                 <MenubarItem>Consultar</MenubarItem>
                 <MenubarSeparator />
@@ -42,39 +36,42 @@ export default function Header(){
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Manutenções</MenubarTrigger>
+              <MenubarTrigger>Manutenções</MenubarTrigger>
               <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Abrir chamado</MenubarItem>
+                <MenubarItem>Consultar</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Abrir chamado</MenubarItem>
               </MenubarContent>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Equipes</MenubarTrigger>
+              <MenubarTrigger>Equipes</MenubarTrigger>
               <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Cadastrar</MenubarItem>
+                <MenubarItem>Consultar</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Cadastrar</MenubarItem>
               </MenubarContent>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Materiais</MenubarTrigger>
+              <MenubarTrigger>Materiais</MenubarTrigger>
               <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Cadastrar</MenubarItem>
+                <MenubarItem>Consultar</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Cadastrar</MenubarItem>
               </MenubarContent>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Custo</MenubarTrigger>
+              <MenubarTrigger>Custo</MenubarTrigger>
               <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Registrar</MenubarItem>
+                <MenubarItem>Consultar</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Registrar</MenubarItem>
               </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <ModeToggle />
             </MenubarMenu>
           </Menubar>
         </nav>
@@ -82,5 +79,3 @@ export default function Header(){
     </header>
   );
 };
-
-
