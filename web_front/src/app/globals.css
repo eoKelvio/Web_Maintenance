@@ -69,3 +69,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.title {
+  font-size:x-large;
+  font-weight: bolder;
+}

@@ -10,10 +10,11 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { ModeToggle } from './ui/mode-toggle';
+import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="p-4 shadow-header bg-white bg-opacity-50">
+    <header className="p-4 shadow-header">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo for light mode */}
         <Image src={"/image/logo-black.png"} width={192} height={192} className="dark:hidden" alt={''}/>
@@ -27,12 +28,9 @@ export default function Header() {
             </MenubarMenu>
 
             <MenubarMenu>
-              <MenubarTrigger>Maquinas</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Consultar</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Cadastrar</MenubarItem>
-              </MenubarContent>
+                <Link href="/machines">
+                  <MenubarTrigger>Maquinas</MenubarTrigger>
+                </Link>
             </MenubarMenu>
 
             <MenubarMenu>
