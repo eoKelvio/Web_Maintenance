@@ -1,135 +1,61 @@
-import { Button } from "@/components/ui/button";
-import Footer from "../../components/footer";
-import Header from "../../components/header";
-import { Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption, } from "@/components/ui/table";
-import Line from "@/components/line";
-import MachineRegister from "@/components/machine-register";
+import Footer from "@/components/footer"
+import Header from "@/components/header"
+import Line from "@/components/line"
+import MachineRegister from "@/components/machine-register"
+import { Machine, columns } from "./columns"
+import { DataTable } from "./data-table"
 
-export default function Home() {
+// Função simulada para obter dados de máquinas
+async function getData(): Promise<Machine[]> {
+  return [
+    {
+      id: "123abc",
+      name: "Maquina A",
+      type: "Tipo 1",
+      model: "Modelo X",
+      serialNumber: "SN123456",
+      manufacturingDate: "2020-01-15",
+      location: "Planta 1",
+      maintenanceHistory: ["Manutenção em 2021", "Manutenção em 2022"],
+    },
+    {
+      id: "456def",
+      name: "Maquina B",
+      type: "Tipo 2",
+      model: "Modelo Y",
+      serialNumber: "SN789101",
+      manufacturingDate: "2019-05-20",
+      location: "Planta 2",
+      maintenanceHistory: ["Manutenção em 2020", "Manutenção em 2023"],
+    },
+    {
+      id: "789ghi",
+      name: "Maquina C",
+      type: "Tipo 3",
+      model: "Modelo Z",
+      serialNumber: "SN112233",
+      manufacturingDate: "2018-03-10",
+      location: "Planta 3",
+      maintenanceHistory: ["Manutenção em 2019", "Manutenção em 2021"],
+    },
+  ]
+}
+
+export default async function Home() {
+  const data = await getData()
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
       <div className="container mx-auto flex justify-between mt-5">
-        <h1 className="title">Consulta de Máquinas</h1>
-        <MachineRegister/>
+        <h1 className="title">Gerenciamento de Máquinas</h1>
+        <MachineRegister />
       </div>
-      <Line/>
-      <div className="container mx-auto mt-5 flex-grow">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead>Nome</TableHead>
-            <TableHead>Tipo</TableHead>
-            <TableHead>Modelo</TableHead>
-            <TableHead>Fabricação</TableHead>
-            <TableHead>Serial</TableHead>
-            <TableHead>Localização</TableHead>
-            <TableHead>Ultima Manutenção</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Empilhadeirão</TableCell>
-            <TableCell>Empilhadeira</TableCell>
-            <TableCell>Toyota</TableCell>
-            <TableCell>10/03/2013</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>1110093</TableCell>
-            <TableCell>05/05/2023</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <Line />
+      <div className="flex-grow container mx-auto my-10">
+        <DataTable columns={columns} data={data} />
       </div>
       <Footer />
     </div>
-  );
+  )
 }
