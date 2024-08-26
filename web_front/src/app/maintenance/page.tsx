@@ -39,7 +39,7 @@ export default async function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <div className="container mx-auto flex justify-between mt-5">
-        <h1 className="title">Gerencias Manutenções</h1>
+        <h1 className="title">Gerenciar Manutenções</h1>
         <MaintenanceRegister />
       </div>
       <Line />
