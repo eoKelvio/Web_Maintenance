@@ -24,7 +24,9 @@ export default function Header() {
         <nav>
           <Menubar>
             <MenubarMenu>
-              <MenubarTrigger>DashBoard</MenubarTrigger>
+              <Link href="/">
+                <MenubarTrigger>DashBoard</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
@@ -34,39 +36,27 @@ export default function Header() {
             </MenubarMenu>
 
             <MenubarMenu>
-              <MenubarTrigger>Manutenções</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Consultar</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Abrir chamado</MenubarItem>
-              </MenubarContent>
+              <Link href="/maintenance">
+                <MenubarTrigger>Manutenções</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-              <MenubarTrigger>Equipes</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Consultar</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Cadastrar</MenubarItem>
-              </MenubarContent>
+              <Link href="/teams">
+                <MenubarTrigger>Equipes</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-              <MenubarTrigger>Materiais</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Consultar</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Cadastrar</MenubarItem>
-              </MenubarContent>
+              <Link href="/materials">
+                <MenubarTrigger>Materiais</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-              <MenubarTrigger>Custo</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Consultar</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Registrar</MenubarItem>
-              </MenubarContent>
+              <Link href="/cost">
+                <MenubarTrigger>Custo</MenubarTrigger>
+              </Link>
             </MenubarMenu>
             <MenubarMenu>
               <ModeToggle />

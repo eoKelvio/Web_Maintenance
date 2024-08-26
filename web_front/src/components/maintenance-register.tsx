@@ -16,36 +16,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
+import { Status } from "./status-button"
+import { Teams } from "./teams"
 
 
-export default function MachineRegister() {
+export default function MaintenanceRegister() {
   return (
     <Dialog>
       <DialogTrigger asChild className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-accent">
-        <Button variant="outline">Cadastrar Máquina</Button>
+        <Button variant="outline">Solicitar Manutenção</Button>
       </DialogTrigger>
       <DialogContent>
       <DialogHeader>
-          <DialogTitle>Cadastro de Máquina</DialogTitle>
+          <DialogTitle>Cadastro de Manutenção</DialogTitle>
           <DialogDescription>
             Faça cadastro de máquinas novas
           </DialogDescription>
         </DialogHeader>
             <form>
               <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5 gap-1">
-                  <Label htmlFor="name">Nome</Label>
-                  <Input id="name" placeholder="Nome da maquina" />
-                  <Label htmlFor="type">Tipo</Label>
-                  <Input id="type" placeholder="Tipo de máquina" />
-                  <Label htmlFor="fabrication">Fabricação</Label>
+                <div className="flex flex-col space-y-1.5 gap-1">                  
+                  <Label htmlFor="responsability">Responsável</Label>
+                  <Input id="responsability" placeholder="Equipe responsável" />
+                  <Teams/>
                   <DatePickerDemo/>
-                  <Label htmlFor="serie">Serial</Label>
-                  <Input id="serie" placeholder="Número de série" />
-                  <Label htmlFor="local">Local</Label>
-                  <Input id="local" placeholder="Localização da máquina" />
-                  <Label htmlFor="history">Histórico</Label>
-                  <DatePickerDemo/>
+                  <Label htmlFor="priority">Prioridade</Label>
+                  <Input id="priority" placeholder="Número de série" />
+                  <Label htmlFor="status">Status</Label>
+                  <Status/>
+                  <Label htmlFor="description">Descrição</Label>
+                  <Textarea className="w-full p-2 resize-none overflow-hidden rounded-md border border-gray-300 rows=1"/>
                 </div>
               </div>
             </form>
