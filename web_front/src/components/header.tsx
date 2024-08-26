@@ -48,14 +48,8 @@ export default function Header() {
             </MenubarMenu>
 
             <MenubarMenu>
-              <Link href="/materials">
-                <MenubarTrigger>Materiais</MenubarTrigger>
-              </Link>
-            </MenubarMenu>
-
-            <MenubarMenu>
-              <Link href="/cost">
-                <MenubarTrigger>Custo</MenubarTrigger>
+              <Link href="/stock">
+                <MenubarTrigger>Estoque</MenubarTrigger>
               </Link>
             </MenubarMenu>
             <MenubarMenu>

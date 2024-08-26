@@ -21,24 +21,20 @@ import {
 
 const frameworks = [
   {
-    value: "aTeam",
-    label: "Equipe A",
+    value: "1",
+    label: "1100292511",
   },
   {
-    value: "bTeam",
-    label: "Equipe B",
+    value: "2",
+    label: "1100293392",
   },
   {
-    value: "cTeam",
-    label: "Equipe C",
-  },
-  {
-    value: "dTeam",
-    label: "Equipe D",
-  },
+    value: "3",
+    label: "1100290912",
+  }
 ]
 
-export function Teams() {
+export function Maintenances() {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
 
@@ -53,13 +49,13 @@ export function Teams() {
         >
           {value
             ? frameworks.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+            : "Selecione uma equipe..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Pesquisar equipe..." />
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>

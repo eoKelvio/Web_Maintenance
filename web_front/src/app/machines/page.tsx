@@ -1,7 +1,7 @@
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import Line from "@/components/line"
-import MachineRegister from "@/components/machine-register"
+import MachineRegister from "@/components/machine/machine-register"
 import { Machine, columns } from "./columns"
 import { DataTable } from "./data-table"
 
