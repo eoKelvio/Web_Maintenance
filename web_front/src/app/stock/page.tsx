@@ -40,7 +40,6 @@ export default async function StockControl() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
       <div className="container mx-auto flex justify-between mt-5">
         <h1 className="title">Controle de Estoque de Peças</h1>
         <StockRegister/>
@@ -49,7 +48,6 @@ export default async function StockControl() {
       <div className="flex-grow container mx-auto my-10">
         <DataTable columns={columns} data={data} />
       </div>
-      <Footer />
     </div>
   );
 }
