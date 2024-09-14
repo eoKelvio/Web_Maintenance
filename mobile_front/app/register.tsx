@@ -8,7 +8,7 @@ import { H1, Muted } from "~/components/ui/typography";
 export default function RegisterScreen() {
   return (
     <View className="h-full justify-center items-center bg-secondary/30">
-      <View className="p-4 native:pb-24 max-w-md gap-6">
+      <View className="p-4 native:ph-12 max-w-md gap-3">
         <View className="gap-1">
           <H1 className="text-foreground text-center">Crie sua conta</H1>
           <Muted className="text-base text-center">

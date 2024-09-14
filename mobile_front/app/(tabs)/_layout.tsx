@@ -1,13 +1,13 @@
 import { Octicons, Ionicons } from "@expo/vector-icons";
 import { router, Tabs } from "expo-router";
-import { TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { useColorScheme } from "nativewind";
 
 export default function TabLayout() {
   return (
     <Tabs
-      safeAreaInsets={{ bottom: 10 }}
+      safeAreaInsets={{ bottom: Platform.OS === "ios" ? 35 : 10 }}
       screenOptions={{
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,

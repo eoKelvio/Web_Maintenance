@@ -1,6 +1,5 @@
-import { Link } from "expo-router";
 import React from "react";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import Animated, {
   FadeInUp,
   FadeOutDown,
