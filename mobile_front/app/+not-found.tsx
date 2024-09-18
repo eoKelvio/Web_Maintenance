@@ -13,7 +13,6 @@ import { Text } from "~/components/ui/text";
 export default function NotFoundScreen() {
   return (
     <>
-      <Stack.Screen options={{ headerShown: false }} />
       <View className="h-full w-full justify-center bg-secondary/30">
         <Card className="w-full max-w-sm p-6 rounded-2xl self-center">
           <CardHeader className="items-center">
@@ -26,7 +25,7 @@ export default function NotFoundScreen() {
           <CardFooter className="flex-col gap-3 pb-0">
             <Button variant={"outline"}>
               <Link href={".."}>
-                <Text className="text-secondary-foreground">Go back!</Text>
+                <Text className="text-primary">Go back!</Text>
               </Link>
             </Button>
           </CardFooter>
