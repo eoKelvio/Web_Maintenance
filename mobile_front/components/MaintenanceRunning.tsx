@@ -1,14 +1,16 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { user } from "~/data/mock_user"; // Importa o mock do usuário
-import { machines } from "~/data/mock_machines"; // Importa as máquinas
+import { user } from "~/data/mock_user"; // Imports the mock user data
+import { machines } from "~/data/mock_machines"; // Imports the machine data
 
+// Component to display the currently running maintenance machine
 export default function MaintenanceRunning() {
-  const currentMachineId = user.currentMachine;
+  const currentMachineId = user.currentMachine; // Retrieves the current machine ID from user data
   const currentMachine = machines.find(
-    (machine) => machine.serialNumber === currentMachineId
+    (machine) => machine.serialNumber === currentMachineId // Finds the machine that matches the current machine ID
   );
 
+  // If no machine is found, display a message
   if (!currentMachine) {
     return (
       <View className="flex-1 items-center justify-center p-4 bg-white rounded-lg shadow-lg">
@@ -19,6 +21,7 @@ export default function MaintenanceRunning() {
     );
   }
 
+  // Display the details of the current machine
   return (
     <View className="p-4 bg-white rounded-lg shadow-lg">
       <Text className="text-xl font-bold mb-2">Máquina Atual</Text>

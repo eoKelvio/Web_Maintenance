@@ -3,29 +3,31 @@ import { View, Text } from "react-native";
 import { DashboardCard } from "./DashCard";
 import { useColorScheme } from "nativewind";
 import { router } from "expo-router";
-import { items } from "~/data/mock_items"; // Importa os dados de itens
-import { machines } from "~/data/mock_machines"; // Importa os dados de máquinas
+import { stockedItems } from "~/data/mock_items"; // Imports stock items data
+import { machines } from "~/data/mock_machines"; // Imports machine data
 
 export default function DashCards() {
-  // Calcula as estatísticas a partir dos dados mockados
-  const lowStockItems = items.filter(
-    (item) => item.currentStock < item.minimumStock
+  // Calculate statistics from mock data
+  const lowStockItems = stockedItems.filter(
+    (item) => item.status === "Abaixo" // Count items below stock
   ).length;
-  const outOfStockItems = items.filter(
-    (item) => item.currentStock === 0
+  const outOfStockItems = stockedItems.filter(
+    (item) => item.currentStock === 0 // Count out-of-stock items
   ).length;
   const stoppedMachines = machines.filter(
-    (machine) => machine.status === "Parado"
+    (machine) => machine.status === "Parado" // Count stopped machines
   ).length;
   const underMaintenanceMachines = machines.filter(
-    (machine) => machine.status === "Em Manutenção"
+    (machine) => machine.status === "Em Manutenção" // Count machines under maintenance
   ).length;
   const runningMachines = machines.filter(
-    (machine) => machine.status === "Rodando"
+    (machine) => machine.status === "Rodando" // Count running machines
   ).length;
   const pendingMachines = machines.filter(
-    (machine) => machine.status === "Pendente"
-  ).length; // Corrigido para contar máquinas pendentes
+    (machine) => machine.status === "Pendente" // Count pending maintenance
+  ).length;
+
+  const { colorScheme } = useColorScheme();
 
   return (
     <View className="p-4 flex-1">
@@ -40,9 +42,7 @@ export default function DashCards() {
             content="Itens abaixo do estoque"
             icon="cart-outline"
             className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-orange-500"
-                : "bg-orange-400"
+              colorScheme === "dark" ? "bg-orange-500" : "bg-orange-400"
             }
             onPress={() => router.push("/stock")}
           />
@@ -73,11 +73,7 @@ export default function DashCards() {
             number={underMaintenanceMachines}
             content="Máquinas em manutenção"
             icon="play-outline"
-            className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-blue-800"
-                : "bg-blue-600"
-            }
+            className={colorScheme === "dark" ? "bg-blue-800" : "bg-blue-600"}
             onPress={() => router.push("/maintenance")}
           />
         </View>
@@ -87,24 +83,18 @@ export default function DashCards() {
             number={runningMachines}
             content="Máquinas rodando"
             icon="checkmark-circle-outline"
-            className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-blue-800"
-                : "bg-blue-600"
-            }
+            className={colorScheme === "dark" ? "bg-blue-800" : "bg-blue-600"}
             onPress={() => router.push("/machines")}
           />
         </View>
 
         <View className="w-1/2 p-1">
           <DashboardCard
-            number={pendingMachines} // Agora conta máquinas pendentes
+            number={pendingMachines}
             content="Manutenções pendentes"
             icon="build-outline"
             className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-orange-500"
-                : "bg-orange-400"
+              colorScheme === "dark" ? "bg-orange-500" : "bg-orange-400"
             }
             onPress={() => router.push("/maintenance")}
           />

@@ -11,9 +11,9 @@ import { MachineDetailParams } from "~/data/types";
 
 export default function MachinesScreen() {
   const [value, setValue] = React.useState("");
-  const colorScheme = useColorScheme(); // Detecção do tema claro ou escuro
+  const colorScheme = useColorScheme();
 
-  // Definir as cores com base no tema e status da máquina
+  // Get color based on machine status and color scheme
   const getStatusColor = (status: string) => {
     if (status === "Rodando") {
       return colorScheme.isDarkColorScheme ? "lightgreen" : "green";

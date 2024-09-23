@@ -9,9 +9,12 @@ import { maintenances } from "~/data/mock_maintenances";
 import { machines } from "~/data/mock_machines";
 import { Separator } from "./ui/separator";
 
+// Component to display the maintenance history
 export default function MaintenanceHistory() {
+  // URI for the machine image
   const MACHINE_IMAGE_URI =
     "https://sweetco.com.br/wp-content/uploads/2023/01/CAFE-Aulika-350x350.png";
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       {maintenances.map((maintenance) => (
