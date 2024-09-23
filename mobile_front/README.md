@@ -1,70 +1,70 @@
-# Maintenance Management App
+# Aplicativo de Gestão de Manutenção
 
-This project is a mobile application built with React Native and Expo, designed to manage machine maintenance efficiently. Users can view maintenance history, request maintenance, and track the status of machines in real-time.
+Este projeto é um aplicativo móvel desenvolvido com React Native e Expo, projetado para gerenciar a manutenção de máquinas de forma eficiente. Os usuários podem visualizar o histórico de manutenção, solicitar manutenção e acompanhar o status das máquinas em tempo real.
 
-## Features
+## Recursos
 
-- **User Authentication**: Secure login for users to manage maintenance tasks.
-- **Machine Overview**: View details about machines, including status, location, and maintenance history.
-- **Maintenance Requests**: Submit requests for maintenance, providing details about the machine and issues encountered.
-- **Maintenance Tracking**: Start and finish maintenance sessions, updating machine status accordingly.
-- **History Logs**: Access a comprehensive log of past maintenance activities.
+- **Autenticação de Usuário**: Login seguro para usuários gerenciarem tarefas de manutenção.
+- **Visão Geral das Máquinas**: Visualizar detalhes sobre as máquinas, incluindo status, localização e histórico de manutenção.
+- **Solicitações de Manutenção**: Enviar pedidos de manutenção, fornecendo detalhes sobre a máquina e os problemas encontrados.
+- **Acompanhamento de Manutenção**: Iniciar e finalizar sessões de manutenção, atualizando o status da máquina conforme necessário.
+- **Registros de Histórico**: Acessar um log abrangente das atividades de manutenção anteriores.
 
-## Tech Stack
+## Stack Tecnológica
 
-- **React Native**: Framework for building native apps using React.
-- **Expo**: A toolchain for developing React Native applications.
-- **TypeScript**: Strongly typed programming language for better code quality.
-- **Mock Data**: Simulated data for testing and development purposes.
+- **React Native**: Framework para construção de aplicativos nativos usando React.
+- **Expo**: Um conjunto de ferramentas para desenvolver aplicativos React Native.
+- **TypeScript**: Linguagem de programação fortemente tipada para melhor qualidade de código.
+- **Dados Simulados**: Dados simulados para testes e propósitos de desenvolvimento.
 
-## Getting Started
+## Começando
 
-To set up and run the application locally, follow these steps:
+Para configurar e executar o aplicativo localmente, siga estes passos:
 
-1. **Clone the repository**:
+1. **Clone o repositório**:
 
    ```bash
    git clone https://github.com/eoKelvio/Web_Maintenance.git
-   cd Web_Maitenance/mobile_front
+   cd Web_Maintenance/mobile_front
    ```
 
-2. **Install dependencies**:
+2. **Instale as dependências**:
 
    ```bash
    npm install
    ```
 
-3. **Start the development server**:
+3. **Inicie o servidor de desenvolvimento**:
 
    ```bash
    npx expo start
    ```
 
-4. **Run the application**:
-   - You can scan the QR code with your Expo Go app or use an emulator to run the application on your device.
+4. **Execute o aplicativo**:
+   - Você pode escanear o QR code com o aplicativo Expo Go ou usar um emulador para rodar o aplicativo em seu dispositivo.
 
-## File Structure
+## Estrutura de Arquivos
 
 ```plaintext
 .
-├── components             # Reusable UI components
-├── data                   # Mock data files
-│   ├── mock_items.ts      # Mock items for maintenance
-│   ├── mock_machines.ts   # Mock machines data
-│   ├── mock_maintenances.ts # Mock maintenance records
-│   └── mock_teams.ts      # Mock teams data
-├── screens                # Screens for different app functionalities
-│   ├── MaintenanceHistory.tsx      # View maintenance history
-│   ├── MaintenancePending.tsx      # View pending maintenance tasks
-│   ├── MaintenanceRequest.tsx      # Request new maintenance
-│   └── MaintenanceRunning.tsx      # View ongoing maintenance
-└── App                    # Main application entry point
+├── components             # Componentes de UI reutilizáveis
+├── data                   # Arquivos de dados simulados
+│   ├── mock_items.ts      # Itens simulados para manutenção
+│   ├── mock_machines.ts   # Dados simulados de máquinas
+│   ├── mock_maintenances.ts # Registros simulados de manutenção
+│   └── mock_teams.ts      # Dados simulados de equipes
+├── screens                # Telas para diferentes funcionalidades do aplicativo
+│   ├── MaintenanceHistory.tsx      # Visualizar histórico de manutenção
+│   ├── MaintenancePending.tsx      # Visualizar tarefas de manutenção pendentes
+│   ├── MaintenanceRequest.tsx      # Solicitar nova manutenção
+│   └── MaintenanceRunning.tsx      # Visualizar manutenção em andamento
+└── App                    # Ponto de entrada principal do aplicativo
 ```
 
-## Contributing
+## Contribuindo
 
-Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
+Contribuições são bem-vindas! Se você encontrar algum problema ou tiver sugestões de melhoria, por favor, abra uma issue ou envie um pull request.
 
-## License
+## Licença
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para detalhes.
