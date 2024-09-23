@@ -58,7 +58,7 @@ To set up and run the application locally, follow these steps:
 │   ├── MaintenancePending.tsx      # View pending maintenance tasks
 │   ├── MaintenanceRequest.tsx      # Request new maintenance
 │   └── MaintenanceRunning.tsx      # View ongoing maintenance
-└── App.tsx               # Main application entry point
+└── App                    # Main application entry point
 ```
 
 ## Contributing
