@@ -2,6 +2,7 @@ import { Card, CardDescription, CardTitle } from "~/components/ui/card";
 import { Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useColorScheme } from "nativewind";
+import { Muted } from "./ui/typography";
 
 type Card = {
   number: number;
@@ -28,7 +29,7 @@ export function DashboardCard({
           size={24}
         />
       </View>
-      <CardDescription className="self-center text-white">
+      <CardDescription className="text-white self-center">
         <Text>{content}</Text>
       </CardDescription>
     </Card>
