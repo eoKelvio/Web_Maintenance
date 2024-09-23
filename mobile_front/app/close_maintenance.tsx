@@ -61,7 +61,10 @@ export default function CloseMaintenanceScreen() {
 
   return (
     <View className="p-4 flex-1">
-      <ScrollView contentContainerStyle={{ gap: 3 }}>
+      <ScrollView
+        contentContainerStyle={{ gap: 3 }}
+        showsVerticalScrollIndicator={false}
+      >
         {fields.map((field, index) => (
           <View key={index} className="flex-row gap-2 items-center">
             <View className="flex-1">

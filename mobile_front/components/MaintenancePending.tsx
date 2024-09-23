@@ -13,7 +13,10 @@ import { Muted } from "./ui/typography";
 export default function MaintenancePending() {
   const pendingMachines = machines.filter((m) => m.status === "Pendente");
   return (
-    <ScrollView contentContainerClassName="gap-2">
+    <ScrollView
+      contentContainerClassName="gap-2"
+      showsVerticalScrollIndicator={false}
+    >
       {pendingMachines.length > 0 ? (
         pendingMachines.map((machine) => (
           <Card

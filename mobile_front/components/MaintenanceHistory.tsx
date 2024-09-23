@@ -13,7 +13,7 @@ export default function MaintenanceHistory() {
   const MACHINE_IMAGE_URI =
     "https://sweetco.com.br/wp-content/uploads/2023/01/CAFE-Aulika-350x350.png";
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       {maintenances.map((maintenance) => (
         <View key={maintenance.id}>
           <View className="flex flex-row">

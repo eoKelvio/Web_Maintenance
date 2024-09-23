@@ -23,7 +23,7 @@ export default function MaintenanceChart() {
       <Text className="text-xl font-bold text-primary text-left mb-3">
         Número de Manutenções por Equipe
       </Text>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {maintenanceCount.map((item, index) => (
           <View key={index} className="flex-row items-center mb-3">
             <Text className="w-20 text-base mr-2 text-primary">
