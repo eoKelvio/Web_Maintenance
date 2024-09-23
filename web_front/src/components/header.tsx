@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import {
   Menubar,
   MenubarContent,
@@ -7,74 +8,52 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@/components/ui/menubar"
+} from "@/components/ui/menubar";
+import { ModeToggle } from './ui/mode-toggle';
+import Link from 'next/link';
 
-
-export default function Header(){
+export default function Header() {
   return (
     <header className="p-4 shadow-header">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-gray-500 text-2xl">Meu Site</h1>
+        {/* Logo for light mode */}
+        <Image src={"/image/logo-black.png"} width={192} height={192} className="dark:hidden" alt={''}/>
+        {/* Logo for dark mode */}
+        <Image src={"/image/logo-white.png"} width={192} height={192} className="hidden dark:block" alt={''}/>
+        
         <nav>
-          {/* <ul className="flex space-x-4">
-            <li>
-              <a href="/" className="text-gray-500 hover:underline">Home</a>
-            </li>
-            <li>
-              <a href="/about" className="text-gray-500 hover:underline">Sobre</a>
-            </li>
-            <li>
-              <a href="/contact" className="text-gray-500 hover:underline">Contato</a>
-            </li>
-          </ul> */}
           <Menubar>
             <MenubarMenu>
-              <MenubarTrigger>DashBoard</MenubarTrigger>
+              <Link href="/">
+                <MenubarTrigger>DashBoard</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Maquinas</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Consultar</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Cadastrar</MenubarItem>
-              </MenubarContent>
+                <Link href="/machines">
+                  <MenubarTrigger>Maquinas</MenubarTrigger>
+                </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Manutenções</MenubarTrigger>
-              <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Abrir chamado</MenubarItem>
-              </MenubarContent>
+              <Link href="/maintenance">
+                <MenubarTrigger>Manutenções</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Equipes</MenubarTrigger>
-              <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Cadastrar</MenubarItem>
-              </MenubarContent>
+              <Link href="/teams">
+                <MenubarTrigger>Equipes</MenubarTrigger>
+              </Link>
             </MenubarMenu>
 
             <MenubarMenu>
-            <MenubarTrigger>Materiais</MenubarTrigger>
-              <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Cadastrar</MenubarItem>
-              </MenubarContent>
+              <Link href="/stock">
+                <MenubarTrigger>Estoque</MenubarTrigger>
+              </Link>
             </MenubarMenu>
-
             <MenubarMenu>
-            <MenubarTrigger>Custo</MenubarTrigger>
-              <MenubarContent>
-              <MenubarItem>Consultar</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Registrar</MenubarItem>
-              </MenubarContent>
+              <ModeToggle />
             </MenubarMenu>
           </Menubar>
         </nav>
@@ -82,5 +61,3 @@ export default function Header(){
     </header>
   );
 };
-
-
