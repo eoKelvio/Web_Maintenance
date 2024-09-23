@@ -5,16 +5,19 @@ import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
 import { H1, Muted } from "~/components/ui/typography";
 
+// Component to request maintenance for a machine
 export default function MaintenanceRequest() {
-  const [machine, setMachine] = useState("");
-  const [description, setDescription] = useState("");
-  const [notes, setNotes] = useState("");
+  // State variables to hold input values for the maintenance request
+  const [machine, setMachine] = useState(""); // Holds the machine ID or name
+  const [description, setDescription] = useState(""); // Holds the problem description
+  const [notes, setNotes] = useState(""); // Holds additional notes (machine location)
 
   const handleRequest = () => {
-    // Limpar os campos de input após exibir os toasts
+    // Clear input fields after submitting the request
     setMachine("");
     setDescription("");
     setNotes("");
+    // Optionally, you could also show a toast notification or feedback here
   };
 
   return (

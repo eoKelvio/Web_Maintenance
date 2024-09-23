@@ -3,29 +3,29 @@ import { View, Text } from "react-native";
 import { DashboardCard } from "./DashCard";
 import { useColorScheme } from "nativewind";
 import { router } from "expo-router";
-import { stockedItems } from "~/data/mock_items"; // Importa os dados de itens
-import { machines } from "~/data/mock_machines"; // Importa os dados de máquinas
+import { stockedItems } from "~/data/mock_items"; // Imports stock items data
+import { machines } from "~/data/mock_machines"; // Imports machine data
 
 export default function DashCards() {
-  // Calcula as estatísticas a partir dos dados mockados
+  // Calculate statistics from mock data
   const lowStockItems = stockedItems.filter(
-    (item) => item.status === "Abaixo"
+    (item) => item.status === "Abaixo" // Count items below stock
   ).length;
   const outOfStockItems = stockedItems.filter(
-    (item) => item.currentStock === 0
+    (item) => item.currentStock === 0 // Count out-of-stock items
   ).length;
   const stoppedMachines = machines.filter(
-    (machine) => machine.status === "Parado"
+    (machine) => machine.status === "Parado" // Count stopped machines
   ).length;
   const underMaintenanceMachines = machines.filter(
-    (machine) => machine.status === "Em Manutenção"
+    (machine) => machine.status === "Em Manutenção" // Count machines under maintenance
   ).length;
   const runningMachines = machines.filter(
-    (machine) => machine.status === "Rodando"
+    (machine) => machine.status === "Rodando" // Count running machines
   ).length;
   const pendingMachines = machines.filter(
-    (machine) => machine.status === "Pendente"
-  ).length; // Corrigido para contar máquinas pendentes
+    (machine) => machine.status === "Pendente" // Count pending maintenance
+  ).length;
 
   const { colorScheme } = useColorScheme();
 
@@ -90,7 +90,7 @@ export default function DashCards() {
 
         <View className="w-1/2 p-1">
           <DashboardCard
-            number={pendingMachines} // Agora conta máquinas pendentes
+            number={pendingMachines}
             content="Manutenções pendentes"
             icon="build-outline"
             className={

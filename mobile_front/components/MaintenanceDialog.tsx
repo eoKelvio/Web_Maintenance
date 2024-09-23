@@ -13,27 +13,30 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { user, startMaintenance, finishMaintenance } from "~/data/mock_user";
+import { user, startMaintenance } from "~/data/mock_user";
 import { Machine } from "~/data/mock_machines";
 
+// MaintenanceDialog component to handle maintenance actions for a machine
 export default function MaintenanceDialog({
   machineData,
 }: {
-  machineData: Machine;
+  machineData: Machine; // Props to receive machine data
 }) {
+  // State to manage loading status
   const [isLoading, setIsLoading] = useState(false);
 
+  // Function to handle the action of starting maintenance
   const handleAction = async () => {
-    setIsLoading(true);
+    setIsLoading(true); // Set loading to true
 
     try {
+      // Start maintenance process
       await startMaintenance(user, machineData.serialNumber);
-      router.push("/maintenance");
+      router.push("/maintenance"); // Navigate to the maintenance screen after success
     } catch (error) {
-      console.error("Erro ao processar a manutenção:", error);
-      alert("Ocorreu um erro ao processar a manutenção. Tente novamente.");
+      console.error("Error processing maintenance:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading status
     }
   };
 

@@ -10,8 +10,11 @@ import { machines } from "~/data/mock_machines";
 import { router } from "expo-router";
 import { Muted } from "./ui/typography";
 
+// Component to display pending maintenance machines
 export default function MaintenancePending() {
+  // Filter machines that have a status of "Pending"
   const pendingMachines = machines.filter((m) => m.status === "Pendente");
+
   return (
     <ScrollView
       contentContainerClassName="gap-2"
