@@ -8,6 +8,7 @@ import { useColorScheme } from "~/lib/useColorScheme";
 export default function StockScreen() {
   const { isDarkColorScheme } = useColorScheme();
 
+  // Get color based on item status and color scheme
   const getStatusColor = (status: string) => {
     if (status === "Normal") {
       return isDarkColorScheme ? "lightgreen" : "green";

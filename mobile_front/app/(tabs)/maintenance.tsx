@@ -6,13 +6,13 @@ import MaintenanceRequest from "~/components/MaintenanceRequest";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Text } from "~/components/ui/text";
 import { user } from "~/data/mock_user";
-import { machines } from "~/data/mock_machines"; // Importando as máquinas
+import { machines } from "~/data/mock_machines";
 import MachineDetail from "~/components/MachineDetail";
 
 export default function MaintenanceScreen() {
   const [selectedTab, setSelectedTab] = React.useState("history");
 
-  // Função para obter os dados da máquina atual
+  // Function to get the current machine's data
   const getCurrentMachineData = () => {
     return machines.find(
       (machine) => machine.serialNumber === user.currentMachine
@@ -47,17 +47,14 @@ export default function MaintenanceScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerClassName="h-full"
         >
-          {/* Aba de Histórico */}
           <TabsContent value="history">
             <MaintenanceHistory />
           </TabsContent>
 
-          {/* Aba de Pendentes */}
           <TabsContent value="pending">
             <MaintenancePending />
           </TabsContent>
 
-          {/* Aba de Máquina Atual */}
           <TabsContent value="running">
             {currentMachineData ? (
               <MachineDetail
@@ -71,7 +68,6 @@ export default function MaintenanceScreen() {
             )}
           </TabsContent>
 
-          {/* Aba de Solicitar */}
           <TabsContent value="request">
             <MaintenanceRequest />
           </TabsContent>
