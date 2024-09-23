@@ -1,13 +1,15 @@
 import "~/global.css";
+import * as React from "react";
+import { Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Theme, ThemeProvider } from "@react-navigation/native";
-import { SplashScreen, Stack } from "expo-router";
-import * as React from "react";
-import { Platform } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+import { Platform } from "react-native";
+import { SplashScreen, Stack } from "expo-router";
+import { MachineDetailParams } from "~/data/types";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -29,6 +31,18 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+  const getStatusColor = (status: string) => {
+    if (status === "Rodando") {
+      return isDarkColorScheme ? "lightgreen" : "green";
+    } else if (status === "Parado") {
+      return isDarkColorScheme ? "lightcoral" : "red";
+    } else if (status === "Pendente") {
+      return isDarkColorScheme ? "yellow" : "orange";
+    } else {
+      return isDarkColorScheme ? "lightblue" : "blue";
+    }
+  };
 
   React.useEffect(() => {
     (async () => {
@@ -72,7 +86,36 @@ export default function RootLayout() {
         <Stack.Screen name="login" />
         <Stack.Screen name="register" />
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="machine_detail" />
+        <Stack.Screen
+          name="machine_detail"
+          options={({ route }) => {
+            const { title, status } = route.params as MachineDetailParams;
+            return {
+              headerShown: true,
+              headerTitle: title,
+              headerShadowVisible: false,
+              headerRight: () => (
+                <Text
+                  style={{
+                    color: getStatusColor(status),
+                    paddingRight: 20,
+                  }}
+                >
+                  {status}
+                </Text>
+              ),
+            };
+          }}
+        />
+        <Stack.Screen
+          name="close_maintenance"
+          options={{
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: "Encerrar Manutenção",
+            headerTitleAlign: "center",
+          }}
+        />
       </Stack>
       <PortalHost />
     </ThemeProvider>
