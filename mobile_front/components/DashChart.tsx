@@ -3,9 +3,9 @@ import { View, Text, ScrollView } from "react-native";
 import { maintenances } from "~/data/mock_maintenances"; // Adjust the path as needed
 import { teams } from "~/data/mock_teams"; // Adjust the path as needed
 
-// Definir o componente que renderiza o gráfico
+// Define the component that renders the chart
 export default function MaintenanceChart() {
-  // Contar o número de manutenções por equipe
+  // Count the number of maintenances per team
   const maintenanceCount = teams.map((team) => {
     const count = maintenances.filter(
       (m) => m.performedBy === team.name
@@ -13,7 +13,7 @@ export default function MaintenanceChart() {
     return { team: team.name, maintenance: count };
   });
 
-  // Encontrar o valor máximo de manutenções para ajustar a escala
+  // Find the maximum number of maintenances to adjust the scale
   const maxMaintenance = Math.max(
     ...maintenanceCount.map((d) => d.maintenance)
   );
