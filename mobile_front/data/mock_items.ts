@@ -1,13 +1,14 @@
-// mock_items.ts
+// Type definition for an Item
 export type Item = {
-  id: number;
-  name: string;
-  unit: string;
-  currentStock: number;
-  minimumStock: number;
-  status: "Normal" | "Abaixo";
+  id: number; // Unique identifier for the item
+  name: string; // Name of the item
+  unit: string; // Unit of measurement (e.g., liters, units)
+  currentStock: number; // Current stock level of the item
+  minimumStock: number; // Minimum stock level for the item
+  status: "Normal" | "Abaixo"; // Status indicating if the item is normal or below minimum stock
 };
 
+// Array of mock items
 export const items: Item[] = [
   {
     id: 1,
@@ -59,21 +60,21 @@ export const items: Item[] = [
   },
 ];
 
-// Função para gerar status e quantidades aleatórias
+// Function to generate random stock quantities and statuses
 export const generateRandomStock = (): Item[] => {
   return items.map((item) => {
-    const currentStock = Math.floor(Math.random() * 20);
-    const minimumStock = Math.floor(Math.random() * 10) + 1;
-    const status = currentStock < minimumStock ? "Abaixo" : "Normal";
+    const currentStock = Math.floor(Math.random() * 20); // Random current stock between 0 and 19
+    const minimumStock = Math.floor(Math.random() * 10) + 1; // Random minimum stock between 1 and 10
+    const status = currentStock < minimumStock ? "Abaixo" : "Normal"; // Determine status based on current stock
 
     return {
-      ...item,
-      currentStock,
-      minimumStock,
-      status,
+      ...item, // Spread the existing item properties
+      currentStock, // Update current stock
+      minimumStock, // Update minimum stock
+      status, // Update status
     };
   });
 };
 
-// Variável para armazenar o estoque gerado aleatoriamente
-export const stockedItems: Item[] = generateRandomStock();
+// Variable to store the randomly generated stock
+export const stockedItems: Item[] = generateRandomStock(); // Generates and stores the stocked items
