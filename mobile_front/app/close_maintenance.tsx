@@ -27,10 +27,12 @@ export default function CloseMaintenanceScreen() {
   ]);
   const [comment, setComment] = useState<string>("");
 
+  // Add a new field for selecting materials and quantity
   const handleAddField = () => {
     setFields([...fields, { selectedItem: "", quantity: "" }]);
   };
 
+  // Remove a field by index if there are multiple fields
   const handleRemoveField = (index: number) => {
     if (fields.length > 1) {
       const newFields = fields.filter((_, i) => i !== index);
@@ -38,6 +40,7 @@ export default function CloseMaintenanceScreen() {
     }
   };
 
+  // Update the value of a specific field
   const handleFieldChange = (
     index: number,
     field: keyof Field,
@@ -48,10 +51,10 @@ export default function CloseMaintenanceScreen() {
     setFields(newFields);
   };
 
+  // Finish maintenance process and navigate
   const handleFinishMaintenance = async () => {
     try {
       await finishMaintenance(user);
-      // Navigate or show success message
       router.push("/(tabs)/maintenance");
     } catch (error) {
       console.error(error);

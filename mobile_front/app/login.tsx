@@ -18,6 +18,8 @@ export default function LoginScreen() {
 
         <Input placeholder="Email" />
         <Input textContentType="password" placeholder="Senha" />
+
+        {/* Navigate to the main tabs upon successful login */}
         <Button
           className="mt-4"
           onPress={() => {
@@ -33,6 +35,7 @@ export default function LoginScreen() {
           <View className="flex-1 h-px bg-muted" />
         </View>
 
+        {/* Navigate to the registration screen */}
         <Button
           className="mt-4"
           onPress={() => {

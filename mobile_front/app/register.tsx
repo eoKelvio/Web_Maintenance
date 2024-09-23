@@ -15,11 +15,9 @@ export default function RegisterScreen() {
             Insira seu nome, email e senha
           </Muted>
         </View>
-
         <Input placeholder="Nome" />
         <Input placeholder="Email" />
-        <Input textContentType="password" placeholder="Senha"></Input>
-
+        <Input textContentType="password" placeholder="Senha" />
         <Button
           className="mt-4"
           onPress={() => {
@@ -28,13 +26,11 @@ export default function RegisterScreen() {
         >
           <Text>Registrar</Text>
         </Button>
-
         <View className="flex-row items-center gap-3 mt-6">
           <View className="flex-1 h-px bg-muted" />
           <Muted>JÁ POSSUI CONTA?</Muted>
           <View className="flex-1 h-px bg-muted" />
         </View>
-
         <Button
           className="mt-4"
           onPress={() => {
@@ -43,7 +39,6 @@ export default function RegisterScreen() {
         >
           <Text>Entrar</Text>
         </Button>
-
         <View className="mt-4">
           <Muted className="text-center">
             Ao criar uma conta, você concorda com nossos{" "}

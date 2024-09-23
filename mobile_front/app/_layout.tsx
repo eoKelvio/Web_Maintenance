@@ -32,6 +32,7 @@ export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
+  // Get color based on machine status and color scheme
   const getStatusColor = (status: string) => {
     if (status === "Rodando") {
       return isDarkColorScheme ? "lightgreen" : "green";
@@ -48,7 +49,7 @@ export default function RootLayout() {
     (async () => {
       const theme = await AsyncStorage.getItem("theme");
       if (Platform.OS === "web") {
-        // Adds the background color to the html element to prevent white background on overscroll.
+        // Adds background color to prevent white background on overscroll.
         document.documentElement.classList.add("bg-background");
       }
       if (!theme) {
