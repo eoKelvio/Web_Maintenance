@@ -2,16 +2,12 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { Input } from "~/components/ui/input";
-import {
-  Card,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "~/components/ui/card";
-import machines from "~/data/machines";
+import { Card, CardTitle, CardContent, CardHeader } from "~/components/ui/card";
+import { machines } from "~/data/mock_machines";
 import { router } from "expo-router";
 import { Muted } from "~/components/ui/typography";
 import { useColorScheme } from "~/lib/useColorScheme";
+import { MachineDetailParams } from "~/data/types";
 
 export default function MachinesScreen() {
   const [value, setValue] = React.useState("");
@@ -35,8 +31,8 @@ export default function MachinesScreen() {
   };
 
   return (
-    <View className="pt-12 gap-2 bg-secondary/30 h-full">
-      <View className="px-3">
+    <View className="p-3 pb-0 gap-2 bg-secondary/30 h-full">
+      <View>
         <Input
           placeholder="Pesquisar"
           value={value}
@@ -45,20 +41,26 @@ export default function MachinesScreen() {
           aria-errormessage="inputError"
         />
       </View>
-      <ScrollView className="px-4">
+      <ScrollView
+        contentContainerClassName="gap-3"
+        showsVerticalScrollIndicator={false}
+      >
         {machines.map((machine, index) => (
           <Card
-            className="p-4 my-1"
             key={index}
             onTouchEndCapture={() =>
               router.push({
                 pathname: "/machine_detail",
-                params: { machine: JSON.stringify(machine) },
+                params: {
+                  machine: JSON.stringify(machine),
+                  title: machine.name,
+                  status: machine.status,
+                } as MachineDetailParams,
               })
             }
           >
-            <View className="flex flex-row justify-between">
-              <CardTitle>{machine.name}</CardTitle>
+            <CardHeader className="flex flex-row justify-between">
+              <CardTitle>{machine.serialNumber}</CardTitle>
               <Muted
                 style={{
                   color: getStatusColor(machine.status),
@@ -66,10 +68,13 @@ export default function MachinesScreen() {
               >
                 {machine.status}
               </Muted>
-            </View>
-            <CardDescription>Modelo: {machine.model}</CardDescription>
-            <CardContent className="p-0">
-              <Text>{machine.location}</Text>
+            </CardHeader>
+            <CardContent>
+              <Text>Nome: {machine.name}</Text>
+              <View className="flex-row justify-between">
+                <Text>Localização: {machine.location}</Text>
+                <Muted>Detalhes</Muted>
+              </View>
             </CardContent>
           </Card>
         ))}

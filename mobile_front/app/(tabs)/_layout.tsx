@@ -1,6 +1,6 @@
 import { Octicons, Ionicons } from "@expo/vector-icons";
 import { router, Tabs } from "expo-router";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { useColorScheme } from "nativewind";
 
@@ -9,9 +9,11 @@ export default function TabLayout() {
     <Tabs
       safeAreaInsets={{ bottom: Platform.OS === "ios" ? 35 : 10 }}
       screenOptions={{
+        headerStyle: { height: 70 },
+        headerTitleStyle: { fontWeight: 700, fontSize: 15 },
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
-        headerShown: false,
+        headerShown: true,
         headerShadowVisible: false,
         headerTitleAlign: "center",
       }}
@@ -19,6 +21,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          title: "RECARO",
           tabBarIcon: ({ color }) => (
             <Octicons size={28} name="graph" color={color} />
           ),
@@ -27,6 +30,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="machines"
         options={{
+          title: "MÁQUINAS",
           tabBarIcon: ({ color }) => (
             <Octicons size={28} name="apps" color={color} />
           ),
@@ -35,22 +39,17 @@ export default function TabLayout() {
       <Tabs.Screen
         name="maintenance"
         options={{
+          title: "MANUTENÇÕES",
           tabBarIcon: ({ color }) => (
             <Octicons size={28} name="tools" color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="teams"
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Octicons size={28} name="people" color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="stock"
         options={{
+          title: "ESTOQUE",
           tabBarIcon: ({ color }) => (
             <Octicons size={28} name="package" color={color} />
           ),
@@ -60,6 +59,7 @@ export default function TabLayout() {
         name="settings"
         options={{
           headerShown: true,
+          headerStyle: false,
           title: "",
           headerRight: () => <ThemeToggle />,
           headerLeft: () => (
