@@ -1,17 +1,17 @@
-import { Card, CardDescription, CardTitle } from "~/components/ui/card";
-import { Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useColorScheme } from "nativewind";
-import { Muted } from "./ui/typography";
+import { Card, CardDescription, CardTitle } from "~/components/ui/card"; // Importing card components
+import { Text, View } from "react-native"; // Importing React Native components
+import { Ionicons } from "@expo/vector-icons"; // Importing icon library
 
+// Defining the type for the props
 type Card = {
-  number: number;
-  content: string;
-  icon: keyof typeof Ionicons.glyphMap;
-  className: string;
-  onPress: () => void;
+  number: number; // Number to display
+  content: string; // Content description
+  icon: keyof typeof Ionicons.glyphMap; // Icon name
+  className: string; // Additional class names
+  onPress: () => void; // Function to call on press
 };
 
+// Functional component
 export function DashboardCard({
   number,
   content,
@@ -23,11 +23,7 @@ export function DashboardCard({
     <Card className={`p-2 px-4 h-28 ${className}`} onTouchEndCapture={onPress}>
       <View className="w-full flex-row justify-between flex-1 items-center">
         <CardTitle className="text-5xl text-white">{number}</CardTitle>
-        <Ionicons
-          name={icon}
-          color={useColorScheme().colorScheme === "dark" ? "white" : "white"}
-          size={24}
-        />
+        <Ionicons name={icon} color="white" size={24} />
       </View>
       <CardDescription className="text-white self-center">
         <Text>{content}</Text>

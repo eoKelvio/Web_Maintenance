@@ -3,15 +3,15 @@ import { View, Text } from "react-native";
 import { DashboardCard } from "./DashCard";
 import { useColorScheme } from "nativewind";
 import { router } from "expo-router";
-import { items } from "~/data/mock_items"; // Importa os dados de itens
+import { stockedItems } from "~/data/mock_items"; // Importa os dados de itens
 import { machines } from "~/data/mock_machines"; // Importa os dados de máquinas
 
 export default function DashCards() {
   // Calcula as estatísticas a partir dos dados mockados
-  const lowStockItems = items.filter(
-    (item) => item.currentStock < item.minimumStock
+  const lowStockItems = stockedItems.filter(
+    (item) => item.status === "Abaixo"
   ).length;
-  const outOfStockItems = items.filter(
+  const outOfStockItems = stockedItems.filter(
     (item) => item.currentStock === 0
   ).length;
   const stoppedMachines = machines.filter(
@@ -27,6 +27,8 @@ export default function DashCards() {
     (machine) => machine.status === "Pendente"
   ).length; // Corrigido para contar máquinas pendentes
 
+  const { colorScheme } = useColorScheme();
+
   return (
     <View className="p-4 flex-1">
       <Text className="text-xl font-bold text-primary text-left pl-2">
@@ -40,9 +42,7 @@ export default function DashCards() {
             content="Itens abaixo do estoque"
             icon="cart-outline"
             className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-orange-500"
-                : "bg-orange-400"
+              colorScheme === "dark" ? "bg-orange-500" : "bg-orange-400"
             }
             onPress={() => router.push("/stock")}
           />
@@ -73,11 +73,7 @@ export default function DashCards() {
             number={underMaintenanceMachines}
             content="Máquinas em manutenção"
             icon="play-outline"
-            className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-blue-800"
-                : "bg-blue-600"
-            }
+            className={colorScheme === "dark" ? "bg-blue-800" : "bg-blue-600"}
             onPress={() => router.push("/maintenance")}
           />
         </View>
@@ -87,11 +83,7 @@ export default function DashCards() {
             number={runningMachines}
             content="Máquinas rodando"
             icon="checkmark-circle-outline"
-            className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-blue-800"
-                : "bg-blue-600"
-            }
+            className={colorScheme === "dark" ? "bg-blue-800" : "bg-blue-600"}
             onPress={() => router.push("/machines")}
           />
         </View>
@@ -102,9 +94,7 @@ export default function DashCards() {
             content="Manutenções pendentes"
             icon="build-outline"
             className={
-              useColorScheme().colorScheme === "dark"
-                ? "bg-orange-500"
-                : "bg-orange-400"
+              colorScheme === "dark" ? "bg-orange-500" : "bg-orange-400"
             }
             onPress={() => router.push("/maintenance")}
           />

@@ -1,4 +1,4 @@
-//mock_items.ts
+// mock_items.ts
 export type Item = {
   id: number;
   name: string;
@@ -13,49 +13,49 @@ export const items: Item[] = [
     id: 1,
     name: "Óleo Lubrificante",
     unit: "L",
-    currentStock: 12,
-    minimumStock: 10,
+    currentStock: 0,
+    minimumStock: 0,
     status: "Normal",
   },
   {
     id: 2,
     name: "Filtro de Óleo",
     unit: "unidade",
-    currentStock: 4,
-    minimumStock: 5,
-    status: "Abaixo",
+    currentStock: 0,
+    minimumStock: 0,
+    status: "Normal",
   },
   {
     id: 3,
     name: "Correia",
     unit: "unidade",
-    currentStock: 6,
-    minimumStock: 3,
+    currentStock: 0,
+    minimumStock: 0,
     status: "Normal",
   },
   {
     id: 4,
     name: "Parafusos",
     unit: "unidades",
-    currentStock: 20,
-    minimumStock: 15,
+    currentStock: 0,
+    minimumStock: 0,
     status: "Normal",
   },
   {
     id: 5,
     name: "Graxa",
     unit: "kg",
-    currentStock: 2,
-    minimumStock: 5,
-    status: "Abaixo",
+    currentStock: 0,
+    minimumStock: 0,
+    status: "Normal",
   },
   {
     id: 6,
     name: "Rolamento",
     unit: "unidade",
-    currentStock: 1,
-    minimumStock: 3,
-    status: "Abaixo",
+    currentStock: 0,
+    minimumStock: 0,
+    status: "Normal",
   },
 ];
 
@@ -74,3 +74,6 @@ export const generateRandomStock = (): Item[] => {
     };
   });
 };
+
+// Variável para armazenar o estoque gerado aleatoriamente
+export const stockedItems: Item[] = generateRandomStock();
