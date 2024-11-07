@@ -25,6 +25,7 @@ services:
       - ./apis/webhook:/api
     environment:
       PYTHONPATH: /api/app 
+      DATABASE_URL: ${DATABASE_URL}
     command: ["fastapi", "run", "app/main.py", "--port", "8000"]
 
 networks:
