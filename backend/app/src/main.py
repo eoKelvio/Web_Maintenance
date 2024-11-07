@@ -1,2 +1,5 @@
-from fastapi import FastAPI
-import uvicorn
+from .config import app
+
+@app.get("/")
+def root():
+    return{"message":"ok"}

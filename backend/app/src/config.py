@@ -9,10 +9,7 @@ class Settings(BaseSettings):
         extra = "ignore"
 
 settings = Settings()
-app = FastAPI()
 
 DATABASE_URL = settings.database_url
 
-@app.get("/")
-def root():
-    return {"message": "Hello World"}
+app = FastAPI()
