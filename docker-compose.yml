@@ -1,0 +1,35 @@
+services:
+  postgres: 
+    image: postgres:16-alpine3.20
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schemas.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - senai
+
+  app:
+    build: ./backend/
+    ports: 
+      - '8000:8000'
+    networks:
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./apis/webhook:/api
+    environment:
+      PYTHONPATH: /api/app 
+    command: ["fastapi", "run", "app/main.py", "--port", "8000"]
+
+networks:
+  senai:
+    driver: bridge
+
+volumes:
+  postgres_data:
