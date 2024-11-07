@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/teams")
+router = APIRouter(prefix="/storage")
 
 @router.get("/")
 def machine_response():
-    return {"message": "Teams"}
+    return {"message": "Storage"}
