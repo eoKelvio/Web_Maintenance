@@ -1,17 +1,16 @@
-from flask import Blueprint, jsonify, request
+from fastapi import FastAPI, HTTPException
 from src.database import db
 from src.models import User
 
-users_blueprint = Blueprint('users', __name__)
+app = FastAPI()
 
-@users_blueprint.route('/users', methods=['GET'])
-def get_all_users():
-    users = User.query.all()
-    return jsonify([user.to_dict() for user in users])
+@app.get("/users")
+async def get_all_users():
+    users = db.query(User).all()
+    return [user.to_dict() for user in users]
 
-@users_blueprint.route('/users', methods=['POST'])
-def create_user():
-    data = request.get_json()
+@app.post("/users")
+async def create_user(data: dict):
     new_user = User(
         name=data['name'],
         username=data['username'],
@@ -19,36 +18,37 @@ def create_user():
         role=data['role'],
         team_id=data['team_id']
     )
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify(new_user.to_dict()), 201
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user.to_dict()
 
-@users_blueprint.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = User.query.get(user_id)
+@app.get("/users/{user_id}")
+async def get_user(user_id: int):
+    user = db.query(User).get(user_id)
     if user is None:
-        return jsonify({'error': 'User not found'}), 404
-    return jsonify(user.to_dict())
+        raise HTTPException(status_code=404, detail="User not found")
+    return user.to_dict()
 
-@users_blueprint.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    user = User.query.get(user_id)
+@app.put("/users/{user_id}")
+async def update_user(user_id: int, data: dict):
+    user = db.query(User).get(user_id)
     if user is None:
-        return jsonify({'error': 'User not found'}), 404
-    data = request.get_json()
+        raise HTTPException(status_code=404, detail="User not found")
     user.name = data['name']
     user.username = data['username']
     user.password = data['password']
     user.role = data['role']
     user.team_id = data['team_id']
-    db.session.commit()
-    return jsonify(user.to_dict())
+    db.commit()
+    db.refresh(user)
+    return user.to_dict()
 
-@users_blueprint.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get(user_id)
+@app.delete("/users/{user_id}")
+async def delete_user(user_id: int):
+    user = db.query(User).get(user_id)
     if user is None:
-        return jsonify({'error': 'User not found'}), 404
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({'message': 'User deleted'})
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()
+    return {"message": "User deleted"}
