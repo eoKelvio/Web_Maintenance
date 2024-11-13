@@ -9,12 +9,14 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./schemas.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - senai
 
   components:
     build: ./backend/
+    env_file:
+      - .env
     ports: 
       - '9999:9999'
     networks:
@@ -29,6 +31,8 @@ services:
 
   login:
     build: ./backend/
+    env_file:
+      - .env
     ports: 
       - '9998:9998'
     networks:
@@ -43,6 +47,8 @@ services:
   
   machines:
     build: ./backend/
+    env_file:
+      - .env
     ports: 
       - '9997:9997'
     networks:
@@ -57,6 +63,8 @@ services:
 
   maintenances:
     build: ./backend/
+    env_file:
+      - .env
     ports: 
       - '9996:9996'
     networks:
@@ -71,6 +79,8 @@ services:
 
   teams:
     build: ./backend/
+    env_file:
+      - .env
     ports: 
       - '9995:9995'
     networks:
@@ -82,6 +92,22 @@ services:
     environment:
       PYTHONPATH: /api/app 
     command: ["fastapi", "run", "api/app/main.py", "--port", "9995"]
+
+  users:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9994:9994'
+    networks:
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/users:/api
+    environment:
+      PYTHONPATH: /api/app/ 
+    command: ["fastapi", "run", "api/app/main.py", "--port", "9994"]
 
 
 networks:

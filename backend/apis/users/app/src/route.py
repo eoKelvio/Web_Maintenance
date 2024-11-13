@@ -1,52 +1,42 @@
-from fastapi import FastAPI, HTTPException
-from src.database import db
-from src.models import User
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+from .database import save_to_db, get_db
+from .models import UserModels
+from .schemas import UserRequest
 
-app = FastAPI()
+router = APIRouter(prefix="/users")
 
-@app.get("/users")
-async def get_all_users():
-    users = db.query(User).all()
-    return [user.to_dict() for user in users]
+@router.get("/")
+async def get_all_users(db: Session = Depends(get_db)):
+    users = db.query(UserModels).all()
+    return [user.model_dump() for user in users]
 
-@app.post("/users")
-async def create_user(data: dict):
-    new_user = User(
-        name=data['name'],
-        username=data['username'],
-        password=data['password'],
-        role=data['role'],
-        team_id=data['team_id']
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user.to_dict()
+@router.post("/")
+async def create_user(data: UserRequest, db: Session = Depends(get_db)):
+    user = save_to_db(db, UserModels, data)
+    return user.model_dump()
 
-@app.get("/users/{user_id}")
-async def get_user(user_id: int):
-    user = db.query(User).get(user_id)
+@router.get("/{user_id}")
+async def get_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(UserModels).get(user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return user.to_dict()
+    return user.model_dump()
 
-@app.put("/users/{user_id}")
-async def update_user(user_id: int, data: dict):
-    user = db.query(User).get(user_id)
+@router.put("/{user_id}")
+async def update_user(user_id: int, data: UserRequest, db: Session = Depends(get_db)):
+    user = db.query(UserModels).get(user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    user.name = data['name']
-    user.username = data['username']
-    user.password = data['password']
-    user.role = data['role']
-    user.team_id = data['team_id']
+    for key, value in data.model_dump().items():
+        setattr(user, key, value)
     db.commit()
     db.refresh(user)
-    return user.to_dict()
+    return user.model_dump()
 
-@app.delete("/users/{user_id}")
-async def delete_user(user_id: int):
-    user = db.query(User).get(user_id)
+@router.delete("/{user_id}")
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(UserModels).get(user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     db.delete(user)

@@ -26,6 +26,7 @@
     "@rn-primitives/tabs": "^1.0.4",
     "@rn-primitives/tooltip": "~1.0.3",
     "@rn-primitives/types": "~1.0.3",
+    "@rnr/starter-base": "file:",
     "@shopify/flash-list": "^1.7.1",
     "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
