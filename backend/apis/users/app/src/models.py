@@ -10,6 +10,16 @@ class UserModels(Base):
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     role: Mapped[str] = mapped_column(String, nullable=False)
-    team_id: Mapped[int] = mapped_column(Integer, ForeignKey('teams.id'), nullable=False)
+    team_id: Mapped[int] = mapped_column(Integer, ForeignKey("teams.id"))
 
-    team: Mapped["Team"] = relationship("Team", back_populates="users")  # type: ignore
+    team: Mapped["TeamModels"] = relationship(back_populates="users")
+
+
+class TeamModels(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    leader_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+
+    users: Mapped["UserModels"] = relationship(back_populates="team")
