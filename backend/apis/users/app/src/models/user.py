@@ -1,6 +1,8 @@
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ..database import Base
+
 
 class UserModels(Base):
     __tablename__ = "users"

@@ -1,6 +1,8 @@
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ..database import Base
+
 
 class TeamModels(Base):
     __tablename__ = "teams"
@@ -11,6 +13,6 @@ class TeamModels(Base):
 
     # Relacionamento com o líder do time
     leader: Mapped["UserModels"] = relationship("UserModels", foreign_keys=[leader_id], back_populates="led_team")  # type: ignore
-    
+
     # Relacionamento com os membros do time
     user: Mapped["UserModels"] = relationship("UserModels", foreign_keys="UserModels.team_id", back_populates="team")  # type: ignore
