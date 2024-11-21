@@ -12,4 +12,8 @@ class UserModels(Base):
     role: Mapped[str] = mapped_column(String, nullable=False)
     team_id: Mapped[int] = mapped_column(Integer, ForeignKey("teams.id"))
 
-    team: Mapped["TeamModels"] = relationship("TeamModels", back_populates="users", primaryjoin="UserModels.team_id == TeamModels.id") #type: ignore
+    # Relacionamento com o time ao qual o usuário pertence
+    team: Mapped["TeamModels"] = relationship("TeamModels", foreign_keys=[team_id], back_populates="user")  # type: ignore
+
+    # Relacionamento com o time que o usuário lidera
+    led_team: Mapped["TeamModels"] = relationship("TeamModels", foreign_keys="TeamModels.leader_id", back_populates="leader")  # type: ignore

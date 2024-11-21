@@ -1,3 +1,4 @@
+from ..models.user import UserModels
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -13,21 +14,21 @@ async def get_all_Teams(db: Session = Depends(get_db)):
     return Teams
 
 @router.post("/", response_model=TeamResponse)
-async def create_Team(data: TeamRequest, db: Session = Depends(get_db)):
-    existing_Team = db.query(TeamModels).filter(TeamModels.name == data.name).first()
-    if existing_Team:
+async def create_team(data: TeamRequest, db: Session = Depends(get_db)):
+    # Verifica se já existe um time com o mesmo nome
+    existing_team = db.query(TeamModels).filter(TeamModels.name == data.name).first()
+    if existing_team:
         raise HTTPException(status_code=409, detail="Name already exists")
     
+    # Verifica se o líder existe
+    leader = db.query(UserModels).filter(UserModels.id == data.leader_id).first()
+    if not leader:
+        raise HTTPException(status_code=404, detail="Leader ID does not exist")
+    
     try:
-        Team_data = data.model_dump()  
-        Team = save_to_db(db, TeamModels, Team_data)
-        return Team
-
-    except IntegrityError as e:
-        db.rollback()
-        if "foreign key" in str(e.orig).lower():
-            raise HTTPException(status_code=400, detail="Invalid leader_id: Referenced user does not exist")
-        raise HTTPException(status_code=400, detail="Database integrity error")
+        team_data = data.model_dump()  # Ajuste se você não estiver usando Pydantic v2
+        team = save_to_db(db, TeamModels, team_data)
+        return team
 
     except SQLAlchemyError as e:
         db.rollback()
