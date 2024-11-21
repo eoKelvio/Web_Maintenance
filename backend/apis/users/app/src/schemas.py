@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class UserRequest(BaseModel):
     name: str
     username: str
@@ -15,9 +16,11 @@ class UserResponse(BaseModel):
     role: str
     team_id: None | int
 
+
 class TeamRequest(BaseModel):
     name: str
     leader_id: int
+
 
 class TeamResponse(BaseModel):
     id: int
