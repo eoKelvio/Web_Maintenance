@@ -27,7 +27,7 @@ services:
   #     - ./backend/apis/components:/api
   #   environment:
   #     PYTHONPATH: /api/app
-  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9999"]
+  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "--port", "9999"]
 
   # login:
   #   build: ./backend/
@@ -43,7 +43,7 @@ services:
   #     - ./backend/apis/login:/api
   #   environment:
   #     PYTHONPATH: /api/app 
-  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9998"]
+  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
   
   # machines:
   #   build: ./backend/
@@ -59,7 +59,7 @@ services:
   #     - ./backend/apis/machines:/api
   #   environment:
   #     PYTHONPATH: /api/app 
-  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9997"]
+  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
   # maintenances:
   #   build: ./backend/
@@ -75,14 +75,14 @@ services:
   #     - ./backend/apis/maintenances:/api
   #   environment:
   #     PYTHONPATH: /api/app 
-  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9996"]
+  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
 
   users:
     build: ./backend/
     env_file:
       - .env
     ports: 
-      - '9994:9994'
+      - '9995:9995'
     networks:
       - senai
     depends_on:
@@ -91,7 +91,9 @@ services:
       - ./backend/apis/users:/api
     environment:
       PYTHONPATH: /api/app/ 
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9994"]
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9995"]
+
+
 
 
 networks:
