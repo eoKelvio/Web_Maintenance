@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(30) NOT NULL,
     password VARCHAR(30) NOT NULL,
     role VARCHAR(30) NOT NULL,   
-    team_id INT NOT NULL,
+    team_id INT NULL,
     CONSTRAINT fk_team
         FOREIGN KEY(team_id) 
         REFERENCES teams(id)

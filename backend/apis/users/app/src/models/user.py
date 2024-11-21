@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .database import Base
+from ..database import Base
 
 class UserModels(Base):
     __tablename__ = "users"
@@ -10,6 +10,10 @@ class UserModels(Base):
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     role: Mapped[str] = mapped_column(String, nullable=False)
-    team_id: Mapped[int] = mapped_column(Integer, ForeignKey('teams.id'), nullable=False)
+    team_id: Mapped[int] = mapped_column(Integer, ForeignKey("teams.id"))
 
-    team: Mapped["Team"] = relationship("Team", back_populates="users")  # type: ignore
+    # Relacionamento com o time ao qual o usuário pertence
+    team: Mapped["TeamModels"] = relationship("TeamModels", foreign_keys=[team_id], back_populates="user")  # type: ignore
+
+    # Relacionamento com o time que o usuário lidera
+    led_team: Mapped["TeamModels"] = relationship("TeamModels", foreign_keys="TeamModels.leader_id", back_populates="leader")  # type: ignore

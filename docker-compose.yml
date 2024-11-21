@@ -13,85 +13,69 @@ services:
     networks:
       - senai
 
-  components:
-    build: ./backend/
-    env_file:
-      - .env
-    ports: 
-      - '9999:9999'
-    networks:
-      - senai
-    depends_on:
-      - postgres
-    volumes:
-      - ./backend/apis/components:/api
-    environment:
-      PYTHONPATH: /api/app
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9999"]
+  # components:
+  #   build: ./backend/
+  #   env_file:
+  #     - .env
+  #   ports: 
+  #     - '9999:9999'
+  #   networks:
+  #     - senai
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./backend/apis/components:/api
+  #   environment:
+  #     PYTHONPATH: /api/app
+  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9999"]
 
-  login:
-    build: ./backend/
-    env_file:
-      - .env
-    ports: 
-      - '9998:9998'
-    networks:
-      - senai
-    depends_on:
-      - postgres
-    volumes:
-      - ./backend/apis/login:/api
-    environment:
-      PYTHONPATH: /api/app 
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9998"]
+  # login:
+  #   build: ./backend/
+  #   env_file:
+  #     - .env
+  #   ports: 
+  #     - '9998:9998'
+  #   networks:
+  #     - senai
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./backend/apis/login:/api
+  #   environment:
+  #     PYTHONPATH: /api/app 
+  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9998"]
   
-  machines:
-    build: ./backend/
-    env_file:
-      - .env
-    ports: 
-      - '9997:9997'
-    networks:
-      - senai
-    depends_on:
-      - postgres
-    volumes:
-      - ./backend/apis/machines:/api
-    environment:
-      PYTHONPATH: /api/app 
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9997"]
+  # machines:
+  #   build: ./backend/
+  #   env_file:
+  #     - .env
+  #   ports: 
+  #     - '9997:9997'
+  #   networks:
+  #     - senai
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./backend/apis/machines:/api
+  #   environment:
+  #     PYTHONPATH: /api/app 
+  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9997"]
 
-  maintenances:
-    build: ./backend/
-    env_file:
-      - .env
-    ports: 
-      - '9996:9996'
-    networks:
-      - senai
-    depends_on:
-      - postgres
-    volumes:
-      - ./backend/apis/maintenances:/api
-    environment:
-      PYTHONPATH: /api/app 
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9996"]
-
-  teams:
-    build: ./backend/
-    env_file:
-      - .env
-    ports: 
-      - '9995:9995'
-    networks:
-      - senai
-    depends_on:
-      - postgres
-    volumes:
-      - ./backend/apis/teams:/api
-    environment:
-      PYTHONPATH: /api/app 
-    command: ["fastapi", "run", "api/app/main.py", "--port", "9995"]
+  # maintenances:
+  #   build: ./backend/
+  #   env_file:
+  #     - .env
+  #   ports: 
+  #     - '9996:9996'
+  #   networks:
+  #     - senai
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./backend/apis/maintenances:/api
+  #   environment:
+  #     PYTHONPATH: /api/app 
+  #   command: ["fastapi", "run", "api/app/main.py", "--port", "9996"]
 
   users:
     build: ./backend/
