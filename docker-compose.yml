@@ -45,21 +45,21 @@ services:
   #     PYTHONPATH: /api/app 
   #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
   
-  # machines:
-  #   build: ./backend/
-  #   env_file:
-  #     - .env
-  #   ports: 
-  #     - '9997:9997'
-  #   networks:
-  #     - senai
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - ./backend/apis/machines:/api
-  #   environment:
-  #     PYTHONPATH: /api/app 
-  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
+  machines:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9997:9997'
+    networks:
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/machines:/api
+    environment:
+      PYTHONPATH: /api/app 
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
   # maintenances:
   #   build: ./backend/
@@ -92,9 +92,6 @@ services:
     environment:
       PYTHONPATH: /api/app/ 
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9995"]
-
-
-
 
 networks:
   senai:
