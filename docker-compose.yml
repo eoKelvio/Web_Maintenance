@@ -13,21 +13,21 @@ services:
     networks:
       - senai
 
-  # components:
-  #   build: ./backend/
-  #   env_file:
-  #     - .env
-  #   ports: 
-  #     - '9999:9999'
-  #   networks:
-  #     - senai
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - ./backend/apis/components:/api
-  #   environment:
-  #     PYTHONPATH: /api/app
-  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "--port", "9999"]
+  parts:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9999:9999'
+    networks:
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/parts:/api
+    environment:
+      PYTHONPATH: /api/app
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
 
   # login:
   #   build: ./backend/
@@ -50,7 +50,7 @@ services:
     env_file:
       - .env
     ports: 
-      - '9997:9997'
+      - '9997:9998'
     networks:
       - senai
     depends_on:
@@ -66,7 +66,7 @@ services:
   #   env_file:
   #     - .env
   #   ports: 
-  #     - '9996:9996'
+  #     - '9996:9997'
   #   networks:
   #     - senai
   #   depends_on:
@@ -82,7 +82,7 @@ services:
     env_file:
       - .env
     ports: 
-      - '9995:9995'
+      - '9995:9996'
     networks:
       - senai
     depends_on:
