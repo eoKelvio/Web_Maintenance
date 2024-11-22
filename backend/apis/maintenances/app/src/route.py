@@ -39,3 +39,4 @@ def delete_maintenance(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Maintenance not found")
     maintenance_crud.delete_maintenance(db, maintenance)
     return {"message": "Maintenance deleted"}
+

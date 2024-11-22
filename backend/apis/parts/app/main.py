@@ -6,5 +6,4 @@ from .src import route
 def root():
     return {"message": "ok"}
 
-
 app.include_router(route.router)
