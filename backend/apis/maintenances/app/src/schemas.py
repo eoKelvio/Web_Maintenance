@@ -1,8 +1,9 @@
 from pydantic import BaseModel
+from datetime import date
 
 class MaintenanceRequest(BaseModel):
     machine_id: int
-    date: str
+    date: date
     status: str
     description: str
     priority: str
@@ -11,7 +12,7 @@ class MaintenanceRequest(BaseModel):
 class MaintenanceResponse(BaseModel):
     id: int
     machine_id: int
-    date: str
+    date: date
     status: str
     description: str
     priority: str

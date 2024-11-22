@@ -28,29 +28,13 @@ services:
     environment:
       PYTHONPATH: /api/app
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
-
-  # login:
-  #   build: ./backend/
-  #   env_file:
-  #     - .env
-  #   ports: 
-  #     - '9998:9998'
-  #   networks:
-  #     - senai
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - ./backend/apis/login:/api
-  #   environment:
-  #     PYTHONPATH: /api/app 
-  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
   
   machines:
     build: ./backend/
     env_file:
       - .env
     ports: 
-      - '9997:9998'
+      - '9998:9998'
     networks:
       - senai
     depends_on:
@@ -59,30 +43,30 @@ services:
       - ./backend/apis/machines:/api
     environment:
       PYTHONPATH: /api/app 
-    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
 
-  # maintenances:
-  #   build: ./backend/
-  #   env_file:
-  #     - .env
-  #   ports: 
-  #     - '9996:9997'
-  #   networks:
-  #     - senai
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - ./backend/apis/maintenances:/api
-  #   environment:
-  #     PYTHONPATH: /api/app 
-  #   command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
+  maintenances:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9997:9997'
+    networks:
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/maintenances:/api
+    environment:
+      PYTHONPATH: /api/app 
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
   users:
     build: ./backend/
     env_file:
       - .env
     ports: 
-      - '9995:9996'
+      - '9996:9996'
     networks:
       - senai
     depends_on:
@@ -91,7 +75,7 @@ services:
       - ./backend/apis/users:/api
     environment:
       PYTHONPATH: /api/app/ 
-    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9995"]
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
 
 networks:
   senai:

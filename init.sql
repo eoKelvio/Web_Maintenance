@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS maintenances (
     status VARCHAR(30) NOT NULL,
     description VARCHAR(30) NOT NULL,
     priority VARCHAR(30) NOT NULL,
-    user_id INT NOT NULL,
-    CONSTRAINT fk_user
-        FOREIGN KEY(user_id) 
-        REFERENCES users(id),
+    team_id INT NOT NULL,
+    CONSTRAINT fk_team
+        FOREIGN KEY(team_id) 
+        REFERENCES teams(id),
     CONSTRAINT fk_machine
         FOREIGN KEY(machine_id) 
         REFERENCES machines(id)
