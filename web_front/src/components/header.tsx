@@ -17,18 +17,14 @@ export default function Header() {
     <header className="p-4 shadow-header">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo for light mode */}
-        <Image src={"/image/logo-black.png"} width={192} height={192} className="dark:hidden" alt={''}/>
+        <Link href={"/"}>
+          <Image src={"/image/logo-black.png"} width={192} height={192} className="dark:hidden" alt={''}/>
         {/* Logo for dark mode */}
-        <Image src={"/image/logo-white.png"} width={192} height={192} className="hidden dark:block" alt={''}/>
+          <Image src={"/image/logo-white.png"} width={192} height={192} className="hidden dark:block" alt={''}/>
+        </Link>
         
         <nav>
           <Menubar>
-            <MenubarMenu>
-              <Link href="/">
-                <MenubarTrigger>DashBoard</MenubarTrigger>
-              </Link>
-            </MenubarMenu>
-
             <MenubarMenu>
                 <Link href="/machines">
                   <MenubarTrigger>Maquinas</MenubarTrigger>
