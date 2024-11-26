@@ -2,12 +2,10 @@
 
 import * as React from "react";
 import {
+  ArrowDownCircle,
   ArrowUpCircle,
-  CheckCircle2,
-  Circle,
-  HelpCircle,
+  CircleEllipsis,
   LucideIcon,
-  XCircle,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -34,28 +32,23 @@ type Status = {
 
 const statuses: Status[] = [
   {
-    value: "pendente",
-    label: "Pendente",
-    icon: HelpCircle,
-  },
-  {
-    value: "andamento",
-    label: "Em andamento",
+    value: "alta",
+    label: "Alta",
     icon: ArrowUpCircle,
   },
   {
-    value: "finalizado",
-    label: "Finalizado",
-    icon: CheckCircle2,
+    value: "média",
+    label: "Média",
+    icon: CircleEllipsis,
   },
   {
-    value: "cancelado",
-    label: "Cancelado",
-    icon: XCircle,
+    value: "baixa",
+    label: "Baixa",
+    icon: ArrowDownCircle,
   },
 ];
 
-export function Status() {
+export function Priority() {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
     null

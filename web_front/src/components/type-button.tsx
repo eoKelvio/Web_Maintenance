@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ArrowUpCircle,
-  CheckCircle2,
-  Circle,
-  HelpCircle,
-  LucideIcon,
-  XCircle,
-} from "lucide-react";
+import { Lightbulb, CircleAlert, Calendar, LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,28 +27,23 @@ type Status = {
 
 const statuses: Status[] = [
   {
-    value: "pendente",
-    label: "Pendente",
-    icon: HelpCircle,
+    value: "preditiva",
+    label: "Preditiva",
+    icon: Lightbulb,
   },
   {
-    value: "andamento",
-    label: "Em andamento",
-    icon: ArrowUpCircle,
+    value: "preventiva",
+    label: "Preventiva",
+    icon: Calendar,
   },
   {
-    value: "finalizado",
-    label: "Finalizado",
-    icon: CheckCircle2,
-  },
-  {
-    value: "cancelado",
-    label: "Cancelado",
-    icon: XCircle,
+    value: "corretiva",
+    label: "Corretiva",
+    icon: CircleAlert,
   },
 ];
 
-export function Status() {
+export function Type() {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
     null
