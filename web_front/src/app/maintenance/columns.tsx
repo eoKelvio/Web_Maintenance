@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,18 +10,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ArrowUpDown } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
+} from "@/components/ui/dropdown-menu";
+import { ArrowUpDown } from "lucide-react";
 
 // Tipo que define o formato dos dados da máquina.
 export type Maintenance = {
-  id: string
-  responsability: string
-  solicitation: string
-  status: string
-  description: string
-}
+  id: string;
+  priority: string;
+  responsability: string;
+  solicitation: string;
+  status: string;
+  description: string;
+  type: string;
+  img: string;
+};
 
 export const columns: ColumnDef<Maintenance>[] = [
   {
@@ -35,8 +37,12 @@ export const columns: ColumnDef<Maintenance>[] = [
           ID da Manutenção
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
+  },
+  {
+    accessorKey: "priority",
+    header: "Prioridade",
   },
   {
     accessorKey: "responsability",
@@ -54,13 +60,13 @@ export const columns: ColumnDef<Maintenance>[] = [
     accessorKey: "description",
     header: "Descrição",
   },
-  
+
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const machineId = row.original.id
-  
+      const machineId = row.original.id;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -80,7 +86,7 @@ export const columns: ColumnDef<Maintenance>[] = [
             <DropdownMenuItem>Excluir</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
-  },  
-]
+  },
+];

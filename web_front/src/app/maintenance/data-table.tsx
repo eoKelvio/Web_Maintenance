@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation"; // Import do useRouter
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -72,7 +74,7 @@ export function DataTable<TData, TValue>({
         <Input
           placeholder="Filtrar por ID..."
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
-          onChange={(event: { target: { value: any; }; }) =>
+          onChange={(event: { target: { value: any } }) =>
             table.getColumn("id")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
@@ -134,7 +136,11 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    const id = (row.original as { id: string | number }).id;
+                    router.push(`/maintenance/${id}`);
+                  }}
+                  className="cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
