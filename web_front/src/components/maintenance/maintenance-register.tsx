@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/6yziop514l8
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,6 +14,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Status } from "../status-button";
 import { Teams } from "../team/teams";
+import { Priority } from "../priority-button";
+import { Type } from "../type-button";
 
 export default function MaintenanceRegister() {
   return (
@@ -42,9 +39,11 @@ export default function MaintenanceRegister() {
               <Label htmlFor="solicitation">Data da Solicitação</Label>
               <DatePickerDemo />
               <Label htmlFor="priority">Prioridade</Label>
-              <Input id="priority" placeholder="Número de série" />
+              <Priority />
               <Label htmlFor="status">Status</Label>
               <Status />
+              <Label htmlFor="type">Tipo</Label>
+              <Type />
               <Label htmlFor="description">Descrição</Label>
               <Textarea className="w-full p-2 resize-none overflow-hidden rounded-md border border-gray-300 rows=1" />
             </div>
