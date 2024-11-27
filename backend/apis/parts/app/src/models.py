@@ -1,5 +1,5 @@
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from .database import Base
 
@@ -12,4 +12,4 @@ class PartModels(Base):
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     cost: Mapped[float] = mapped_column(Integer, nullable=False)
 
-    used_parts = relationship("UsedPartModels", back_populates="part")
+    used_parts: Mapped[str] = mapped_column(String, nullable=False)
