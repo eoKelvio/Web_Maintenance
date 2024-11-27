@@ -1,5 +1,3 @@
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 import Line from "@/components/line";
 import { SparePart, columns } from "./columns";
 import { DataTable } from "./data-table";
