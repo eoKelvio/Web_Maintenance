@@ -13,6 +13,20 @@ services:
     networks:
       - senai
 
+  reverse-proxy:
+    # 
+    image: traefik:v3.2
+    # 
+    command: --api.insecure=true --providers.docker
+    ports:
+      # 
+      - "80:80"
+      # 
+      - "8080:8080"
+    volumes:
+      # 
+      - /var/run/docker.sock:/var/run/docker.sock
+
   parts:
     build: ./backend/
     env_file:
@@ -27,6 +41,10 @@ services:
       - ./backend/apis/parts:/api
     environment:
       PYTHONPATH: /api/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.parts.rule=PathPrefix(`/parts`)"
+      - "traefik.http.services.parts.loadbalancer.server.port=9999"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
   
   machines:
@@ -43,6 +61,10 @@ services:
       - ./backend/apis/machines:/api
     environment:
       PYTHONPATH: /api/app 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.machines.rule=PathPrefix(`/machines`)"
+      - "traefik.http.services.machines.loadbalancer.server.port=9998"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
 
   maintenances:
@@ -59,6 +81,10 @@ services:
       - ./backend/apis/maintenances:/api
     environment:
       PYTHONPATH: /api/app 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maintenances.rule=PathPrefix(`/maintenances`)"
+      - "traefik.http.services.maintenances.loadbalancer.server.port=9997"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
   users:
@@ -74,7 +100,11 @@ services:
     volumes:
       - ./backend/apis/users:/api
     environment:
-      PYTHONPATH: /api/app/ 
+      PYTHONPATH: /api/app/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.users.rule=PathPrefix(`/users`)"
+      - "traefik.http.services.users.loadbalancer.server.port=9996" 
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
 
 networks:
