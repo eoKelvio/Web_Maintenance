@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -20,6 +21,7 @@
     "@radix-ui/react-switch": "^1.1.0",
     "@shadcn/ui": "^0.0.4",
     "@tanstack/react-table": "^8.20.1",
+    "axios": "^1.7.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -31,9 +33,11 @@
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.2",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "web_front": "file:"
+    "web_front": "file:",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
