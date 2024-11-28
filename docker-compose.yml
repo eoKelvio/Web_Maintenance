@@ -1,61 +1,42 @@
 version: '3'
 
 services:
-  postgres_parts:
-    image: postgres:16-alpine3.20
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB_PARTS}
+      POSTGRES_DB_PARTS: ${POSTGRES_DB_PARTS}
+      POSTGRES_DB_MACHINES: ${POSTGRES_DB_MACHINES}
+      POSTGRES_DB_MAINTENANCES: ${POSTGRES_DB_MAINTENANCES}
+      POSTGRES_DB_USERS: ${POSTGRES_DB_USERS}
     ports:
+      - 5432:5432
       - 5433:5433
-    volumes:
-      - postgres_data_parts:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - senai_parts
-
-  postgres_machines:
-    image: postgres:16-alpine3.20
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB_MACHINES}
-    ports:
       - 5434:5434
-    volumes:
-      - postgres_data_machines:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - senai_machines
-
-  postgres_maintenances:
-    image: postgres:16-alpine3.20
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB_MAINTENANCES}
-    ports:
       - 5435:5435
     volumes:
+      - postgres_data_parts:/var/lib/postgresql/data
+      - postgres_data_machines:/var/lib/postgresql/data
       - postgres_data_maintenances:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - senai_maintenances
-
-  postgres_users:
-    image: postgres:16-alpine3.20
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB_USERS}
-    ports:
-      - 5436:5436
-    volumes:
       - postgres_data_users:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
+      - senai_parts
+      - senai_machines
+      - senai_maintenances
       - senai_users
+
+  networks:
+    senai_parts:
+    senai_machines:
+    senai_maintenances:
+    senai_users:
+
+  volumes:
+    postgres_data_parts:
+    postgres_data_machines:
+    postgres_data_maintenances:
+    postgres_data_users:
 
   parts:
     build: ./backend/
@@ -120,15 +101,3 @@ services:
     environment:
       PYTHONPATH: /api/app 
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
-
-volumes:
-  postgres_data_parts:
-  postgres_data_machines:
-  postgres_data_maintenances:
-  postgres_data_users:
-
-networks:
-  senai_parts:
-  senai_machines:
-  senai_maintenances:
-  senai_users:
