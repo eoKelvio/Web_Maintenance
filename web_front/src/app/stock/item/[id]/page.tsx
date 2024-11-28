@@ -130,10 +130,10 @@ export default function DetailsPage({ params }: { params: { id: string } }) {
         <h2 className="px-4 mb-6 text-left text-2xl align-middle font-bold text-muted-foreground">Movimentações</h2>
         <table className="w-full border border-gray-200">
           <thead>
-            <tr className="">
-              <th className="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted p-2">Tipo</th>
-              <th>Data</th>
-              <th>Quantidade</th>
+            <tr className="text-left">
+              <th className="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted p-3">Tipo</th>
+              <th className="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted p-3">Data</th>
+              <th className="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted p-3">Quantidade</th>
             </tr>
           </thead>
           <tbody>
