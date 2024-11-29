@@ -27,12 +27,32 @@ services:
       # 
       - /var/run/docker.sock:/var/run/docker.sock
 
-  parts:
+  gateway:
     build: ./backend/
     env_file:
       - .env
     ports: 
       - '9999:9999'
+    networks:
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/gateway:/api
+    environment:
+      PYTHONPATH: /api/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gateway.rule=PathPrefix(`/gateway`)"
+      - "traefik.http.services.gateway.loadbalancer.server.port=9999"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
+
+  parts:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9998:9998'
     networks:
       - senai
     depends_on:
@@ -44,15 +64,15 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.parts.rule=PathPrefix(`/parts`)"
-      - "traefik.http.services.parts.loadbalancer.server.port=9999"
-    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
+      - "traefik.http.services.parts.loadbalancer.server.port=9998"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
   
   machines:
     build: ./backend/
     env_file:
       - .env
     ports: 
-      - '9998:9998'
+      - '9997:9997'
     networks:
       - senai
     depends_on:
@@ -64,15 +84,15 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.machines.rule=PathPrefix(`/machines`)"
-      - "traefik.http.services.machines.loadbalancer.server.port=9998"
-    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
+      - "traefik.http.services.machines.loadbalancer.server.port=9997"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
   maintenances:
     build: ./backend/
     env_file:
       - .env
     ports: 
-      - '9997:9997'
+      - '9996:9996'
     networks:
       - senai
     depends_on:
@@ -84,15 +104,15 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.maintenances.rule=PathPrefix(`/maintenances`)"
-      - "traefik.http.services.maintenances.loadbalancer.server.port=9997"
-    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
+      - "traefik.http.services.maintenances.loadbalancer.server.port=9996"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
 
   users:
     build: ./backend/
     env_file:
       - .env
     ports: 
-      - '9996:9996'
+      - '9995:9995'
     networks:
       - senai
     depends_on:
@@ -104,8 +124,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.users.rule=PathPrefix(`/users`)"
-      - "traefik.http.services.users.loadbalancer.server.port=9996" 
-    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
+      - "traefik.http.services.users.loadbalancer.server.port=9995" 
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9995"]
 
 networks:
   senai:
