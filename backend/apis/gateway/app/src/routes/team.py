@@ -84,7 +84,7 @@ async def update_team(team_id: int, data: dict):
             
             return update_response.json()
 
-        raise HTTPException(status_code=response.status_code, detail=response.text)
+        raise HTTPException(status_code=teamResponse.status_code, detail=teamResponse.text)
 
 @router.delete("/{team_id}")
 async def delete_team(team_id: int):
