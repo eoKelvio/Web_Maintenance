@@ -38,21 +38,15 @@ async def create_user(data: dict):
 @router.get("/{user_id}")
 async def get_user(user_id: int):
     async with httpx.AsyncClient() as client:
-        # Fazer o GET para buscar todos os usuários
-        response = await client.get(f"{USER_SERVICE_URL}/")
-        
-        if response.status_code == 200:
-            users = response.json()
-            # Procurar o usuário pelo ID
-            for user in users:
-                if user.get("id") == user_id:
-                    return user  # Retorna o usuário se encontrar o ID
 
-            # Se o usuário com o ID fornecido não for encontrado, retorna um erro
-            raise HTTPException(status_code=404, detail="User ID not found")
+        response = await client.get(f"{USER_SERVICE_URL}/{user_id}")
         
-        # Em caso de erro na requisição
-        raise HTTPException(status_code=response.status_code, detail=response.text)
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail="user ID not found")
+        elif response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=response.text)
+        
+        return response.json()
 
 
 @router.put("/{user_id}")

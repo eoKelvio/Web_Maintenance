@@ -25,6 +25,13 @@ async def create_user(data: UserRequest, db: Session = Depends(get_db)):
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(UserModels).get(user_id)
+    
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail=f"user with ID {user_id} not found"
+        )
+    
     return user
 
 
