@@ -5,6 +5,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 # URL do microserviço de usuários
 USER_SERVICE_URL = "http://users:9995/users"
+TEAM_SERVICE_URL = "http://users:9995/teams"
 
 
 @router.get("/", response_model=list[dict])
@@ -18,21 +19,31 @@ async def get_all_users():
 @router.post("/")
 async def create_user(data: dict):
     async with httpx.AsyncClient() as client:
-        # Fazer o GET para buscar todos os usuários
-        response = await client.get(f"{USER_SERVICE_URL}/")
-        
-        if response.status_code == 200:
-            users = response.json()
-            # Verificar se o username já existe no array de usuários
+        # Verificar times existentes
+        team_response = await client.get(f"{TEAM_SERVICE_URL}/")
+        if team_response.status_code != 200:
+            raise HTTPException(status_code=team_response.status_code, detail="Error fetching teams")
+
+        teams = team_response.json()
+        team_ids = {team["id"] for team in teams}
+
+        # Validar team_id
+        if data.get("team_id") is not None and data["team_id"] not in team_ids:
+            raise HTTPException(status_code=400, detail="Invalid team_id")
+
+        # Verificar usuários existentes
+        user_response = await client.get(f"{USER_SERVICE_URL}/")
+        if user_response.status_code == 200:
+            users = user_response.json()
             for user in users:
                 if user.get("username") == data["username"]:
                     raise HTTPException(status_code=409, detail="Username already exists")
-        
-        # Se o username não existir, criar o usuário
+
+        # Criar usuário
         response = await client.post(f"{USER_SERVICE_URL}/", json=data)
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail=response.text)
-        
+
         return response.json()
 
 @router.get("/{user_id}")
@@ -52,25 +63,32 @@ async def get_user(user_id: int):
 @router.put("/{user_id}")
 async def update_user(user_id: int, data: dict):
     async with httpx.AsyncClient() as client:
-        # Fazer o GET para buscar todos os usuários
-        response = await client.get(f"{USER_SERVICE_URL}/")
-        
-        if response.status_code == 200:
-            users = response.json()
+        # Verificar times existentes
+        team_response = await client.get(f"{TEAM_SERVICE_URL}/")
+        if team_response.status_code != 200:
+            raise HTTPException(status_code=team_response.status_code, detail="Error fetching teams")
 
-            # Verificar se o username já existe em outro usuário
+        teams = team_response.json()
+        team_ids = {team["id"] for team in teams}
+
+        # Validar team_id
+        if data.get("team_id") is not None and data["team_id"] not in team_ids:
+            raise HTTPException(status_code=400, detail="Invalid team_id")
+
+        # Verificar usuários existentes
+        user_response = await client.get(f"{USER_SERVICE_URL}/")
+        if user_response.status_code == 200:
+            users = user_response.json()
             for user in users:
                 if user.get("username") == data["username"] and user.get("id") != user_id:
                     raise HTTPException(status_code=409, detail="Username already exists")
-            
-            # Agora, fazer o PUT para atualizar o usuário
-            update_response = await client.put(f"{USER_SERVICE_URL}/{user_id}", json=data)
-            if update_response.status_code != 200:
-                raise HTTPException(status_code=update_response.status_code, detail=update_response.text)
-            
-            return update_response.json()
 
-        raise HTTPException(status_code=response.status_code, detail=response.text)
+        # Atualizar usuário
+        response = await client.put(f"{USER_SERVICE_URL}/{user_id}", json=data)
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=response.text)
+
+        return response.json()
 
 @router.delete("/{user_id}")
 async def delete_user(user_id: int):
