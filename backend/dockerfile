@@ -6,5 +6,5 @@ RUN apt-get update && apt-get install -y curl \
 
 ENV PATH="/root/.local/bin:$PATH"
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml ./
 RUN poetry install --no-root --no-dev && poetry cache clear --all pypi
