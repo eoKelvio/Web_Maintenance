@@ -2,41 +2,16 @@ version: '3'
 
 services:
   postgres:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: postgres:16-alpine3.20
     environment:
-      POSTGRES_DB_PARTS: ${POSTGRES_DB_PARTS}
-      POSTGRES_DB_MACHINES: ${POSTGRES_DB_MACHINES}
-      POSTGRES_DB_MAINTENANCES: ${POSTGRES_DB_MAINTENANCES}
-      POSTGRES_DB_USERS: ${POSTGRES_DB_USERS}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
-      - 5433:5433
-      - 5434:5434
-      - 5435:5435
     volumes:
-      - postgres_data_parts:/var/lib/postgresql/data
-      - postgres_data_machines:/var/lib/postgresql/data
-      - postgres_data_maintenances:/var/lib/postgresql/data
-      - postgres_data_users:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - senai_parts
-      - senai_machines
-      - senai_maintenances
-      - senai_users
-
-  networks:
-    senai_parts:
-    senai_machines:
-    senai_maintenances:
-    senai_users:
-
-  volumes:
-    postgres_data_parts:
-    postgres_data_machines:
-    postgres_data_maintenances:
-    postgres_data_users:
+      - senai_network
 
   parts:
     build: ./backend/
@@ -45,29 +20,29 @@ services:
     ports: 
       - '9999:9999'
     networks:
-      - senai_parts
+      - senai_network
     depends_on:
-      - postgres_parts
+      - postgres
     volumes:
       - ./backend/apis/parts:/api
     environment:
-      PYTHONPATH: /api/app
+      PYTHONPATH: /api/app 
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_PARTS}"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
 
   machines:
     build: ./backend/
-    env_file:
-      - .env
     ports: 
       - '9998:9998'
     networks:
-      - senai_machines
+      - senai_network
     depends_on:
-      - postgres_machines
+      - postgres
     volumes:
       - ./backend/apis/machines:/api
     environment:
       PYTHONPATH: /api/app 
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MACHINES}"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
 
   maintenances:
@@ -77,13 +52,14 @@ services:
     ports: 
       - '9997:9997'
     networks:
-      - senai_maintenances
+      - senai_network
     depends_on:
-      - postgres_maintenances
+      - postgres
     volumes:
       - ./backend/apis/maintenances:/api
     environment:
-      PYTHONPATH: /api/app 
+      PYTHONPATH: /api/app  
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MAINTENANCES}"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
   users:
@@ -93,11 +69,19 @@ services:
     ports: 
       - '9996:9996'
     networks:
-      - senai_users
+      - senai_network
     depends_on:
-      - postgres_users
+      - postgres
     volumes:
       - ./backend/apis/users:/api
     environment:
-      PYTHONPATH: /api/app 
+      PYTHONPATH: /api/app  
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_USERS}"
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
+
+networks:
+  senai_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
