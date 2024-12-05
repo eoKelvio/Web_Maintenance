@@ -76,6 +76,19 @@ services:
     environment:
       PYTHONPATH: /api/app/ 
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
+  
+  tests:
+    build: ./backend/
+    env_file:
+      - .env
+    networks:
+      - senai
+    volumes:
+      - ./backend:/app
+    # environment:
+    #   PYTHONPATH: /app
+    command: ["poetry", "run", "pytest", "/app/tests"]
+
 
 networks:
   senai:
