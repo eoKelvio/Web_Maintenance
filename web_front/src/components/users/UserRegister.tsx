@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { createUser } from '@/components/users/service/UserService';
 
 export default function UserRegister() {
   const [formData, setFormData] = useState({
@@ -31,20 +32,19 @@ export default function UserRegister() {
     }));
   };
 
-  const handleSubmit = async (e:any) => {
-    e.preventDefault(); // Previne o recarregamento da página
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     try {
       const dataToSend = {
         ...formData,
-        team_id: formData.team_id.trim() === "" ? null : formData.team_id,
+        team_id: formData.team_id.trim() === '' ? null : formData.team_id,
       };
-
-      const response = await axios.post("http://localhost:9999/users/", dataToSend);
-      console.log("Usuário cadastrado com sucesso:", response.data);
-      alert("Usuário cadastrado com sucesso!");
-    } catch (error:any) {
-      console.error("Erro ao cadastrar usuário:", error.message);
-      alert("Ocorreu um erro ao cadastrar o usuário. Tente novamente.");
+      const response = await createUser(dataToSend);
+      console.log('Usuário cadastrado com sucesso:', response);
+      alert('Usuário cadastrado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error.message);
+      alert('Ocorreu um erro ao cadastrar o usuário. Tente novamente.');
     }
   };
 
