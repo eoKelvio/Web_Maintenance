@@ -30,11 +30,12 @@ async def create_team(data: dict):
             for team in teams:
                 if team.get("name") == data["name"]:
                     raise HTTPException(status_code=409, detail="Team name already exists")
+                
+        if userResponse.status_code == 200:
+            leader_exists = any(user.get("id") == data["leader_id"] for user in users)
+            if not leader_exists:
+                raise HTTPException(status_code=409, detail="Leader ID does not exist")
 
-            if userResponse.status_code == 200:
-                for user in users:
-                    if user.get("id") != data["leader_id"]:
-                        raise HTTPException(status_code=409, detail="Leader ID does not exist")
         
         # Se o team name não existir, criar o time
         response = await client.post(f"{TEAM_SERVICE_URL}/", json=data)
