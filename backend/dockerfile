@@ -1,27 +1,11 @@
 # Use uma imagem base leve do Python
 FROM python:3.12-slim
 
-# Atualize o sistema e instale dependências
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl \
+    && curl -sSL https://install.python-poetry.org | python3 - \
+    && apt-get clean
 
-# Instale o Poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - \
-    && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
+ENV PATH="/root/.local/bin:$PATH"
 
-# Defina o diretório de trabalho
-WORKDIR /app
-
-# Copie apenas o pyproject.toml
 COPY pyproject.toml ./
-
-# Instale as dependências definidas no pyproject.toml
-RUN poetry install --no-dev --no-interaction --no-ansi
-
-# Copie o restante do código para o contêiner
-COPY . .
-
-# Configure o ponto de entrada
-CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9999"]
+RUN poetry install --no-root --no-dev && poetry cache clear --all pypi

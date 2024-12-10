@@ -1,87 +1,135 @@
-version: '3'
-
 services:
-  postgres:
+  postgres: 
     image: postgres:16-alpine3.20
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - senai_network
+      - senai
 
-  parts:
-    build: 
-      context: ./backend/
+  reverse-proxy:
+    # 
+    image: traefik:v3.2
+    # 
+    command: --api.insecure=true --providers.docker
+    ports:
+      # 
+      - "80:80"
+      # 
+      - "8080:8080"
+    volumes:
+      # 
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  gateway:
+    build: ./backend/
     env_file:
       - .env
     ports: 
       - '9999:9999'
     networks:
-      - senai_network
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/gateway:/api
+    environment:
+      PYTHONPATH: /api/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gateway.rule=PathPrefix(`/gateway`)"
+      - "traefik.http.services.gateway.loadbalancer.server.port=9999"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9999"]
+
+  parts:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9998:9998'
+    networks:
+      - senai
     depends_on:
       - postgres
     volumes:
       - ./backend/apis/parts:/api
     environment:
-      PYTHONPATH: /api/app 
+      PYTHONPATH: /api/app
       DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_PARTS}"
-    command: ["poetry", "run", "fastapi", "run", "apis/parts/app/main.py", "--port", "9999"]
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.parts.rule=PathPrefix(`/parts`)"
+      - "traefik.http.services.parts.loadbalancer.server.port=9998"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9998"]
+  
   machines:
-    build: 
-      context: ./backend/
-    ports: 
-      - '9998:9998'
-    networks:
-      - senai_network
-    depends_on:
-      - postgres
-    volumes:
-      - ./backend/apis/machines:/api
-    environment:
-      PYTHONPATH: /api/app 
-      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MACHINES}"
-    command: ["poetry", "run", "fastapi", "run", "apis/machines/app/main.py", "--port", "9998"]
-
-  maintenances:
-    build: 
-      context: ./backend/
+    build: ./backend/
     env_file:
       - .env
     ports: 
       - '9997:9997'
     networks:
-      - senai_network
+      - senai
     depends_on:
       - postgres
     volumes:
-      - ./backend/apis/maintenances:/api
+      - ./backend/apis/machines:/api
     environment:
-      PYTHONPATH: /api/app  
-      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MAINTENANCES}"
-    command: ["poetry", "run", "fastapi", "run", "apis/maintenances/app/main.py", "--port", "9997"]
+      PYTHONPATH: /api/app
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MACHINES}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.machines.rule=PathPrefix(`/machines`)"
+      - "traefik.http.services.machines.loadbalancer.server.port=9997"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9997"]
 
-  users:
-    build: 
-      context: ./backend/
+  maintenances:
+    build: ./backend/
     env_file:
       - .env
     ports: 
       - '9996:9996'
     networks:
-      - senai_network
+      - senai
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/apis/maintenances:/api
+    environment:
+      PYTHONPATH: /api/app
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MAINTENANCES}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maintenances.rule=PathPrefix(`/maintenances`)"
+      - "traefik.http.services.maintenances.loadbalancer.server.port=9996"
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9996"]
+
+  users:
+    build: ./backend/
+    env_file:
+      - .env
+    ports: 
+      - '9995:9995'
+    networks:
+      - senai
     depends_on:
       - postgres
     volumes:
       - ./backend/apis/users:/api
     environment:
-      PYTHONPATH: /api/app  
+      PYTHONPATH: /api/app/
       DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_USERS}"
-    command: ["poetry", "run", "fastapi", "run", "apis/users/app/main.py", "--port", "9996"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.users.rule=PathPrefix(`/users`)"
+      - "traefik.http.services.users.loadbalancer.server.port=9995" 
+    command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9995"]
   
   tests:
     build: ./backend/
@@ -95,8 +143,9 @@ services:
     #   PYTHONPATH: /app
     command: ["poetry", "run", "pytest", "/app/tests"]
 
+
 networks:
-  senai_network:
+  senai:
     driver: bridge
 
 volumes:

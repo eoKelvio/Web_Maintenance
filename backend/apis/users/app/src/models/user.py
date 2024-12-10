@@ -12,10 +12,4 @@ class UserModels(Base):
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     role: Mapped[str] = mapped_column(String, nullable=False)
-    team_id: Mapped[int] = mapped_column(Integer, ForeignKey("teams.id"))
-
-    # Relacionamento com o time ao qual o usuário pertence
-    team: Mapped[str] = mapped_column(String, nullable=False)
-
-    # Relacionamento com o time que o usuário lidera
-    led_team: Mapped[str] = mapped_column(String, nullable=False)
+    team_id: Mapped[int] = mapped_column(Integer, nullable=True)
