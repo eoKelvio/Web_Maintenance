@@ -61,6 +61,7 @@ services:
       - ./backend/apis/parts:/api
     environment:
       PYTHONPATH: /api/app
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_PARTS}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.parts.rule=PathPrefix(`/parts`)"
@@ -80,7 +81,8 @@ services:
     volumes:
       - ./backend/apis/machines:/api
     environment:
-      PYTHONPATH: /api/app 
+      PYTHONPATH: /api/app
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MACHINES}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.machines.rule=PathPrefix(`/machines`)"
@@ -100,7 +102,8 @@ services:
     volumes:
       - ./backend/apis/maintenances:/api
     environment:
-      PYTHONPATH: /api/app 
+      PYTHONPATH: /api/app
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_MAINTENANCES}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.maintenances.rule=PathPrefix(`/maintenances`)"
@@ -121,6 +124,7 @@ services:
       - ./backend/apis/users:/api
     environment:
       PYTHONPATH: /api/app/
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB_USERS}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.users.rule=PathPrefix(`/users`)"
