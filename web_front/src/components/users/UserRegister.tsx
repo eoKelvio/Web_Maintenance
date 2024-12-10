@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import axios from "axios";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -24,11 +24,11 @@ export default function UserRegister() {
     team_id: "",
   });
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [id]: value,
+      [id]: id === "team_id" ? value.replace(/\D/g, "") : value, // Remove caracteres não numéricos para "team_id"
     }));
   };
 
@@ -37,14 +37,15 @@ export default function UserRegister() {
     try {
       const dataToSend = {
         ...formData,
-        team_id: formData.team_id.trim() === '' ? null : formData.team_id,
+        team_id: formData.team_id.trim() === "" ? null : parseInt(formData.team_id, 10), // Converte para inteiro ou null
       };
+      console.log(dataToSend);
       const response = await createUser(dataToSend);
-      console.log('Usuário cadastrado com sucesso:', response);
-      alert('Usuário cadastrado com sucesso!');
-    } catch (error) {
-      console.error('Erro ao cadastrar usuário:', error.message);
-      alert('Ocorreu um erro ao cadastrar o usuário. Tente novamente.');
+      console.log("Usuário cadastrado com sucesso:", response);
+      alert("Usuário cadastrado com sucesso!");
+    } catch (error: any) {
+      console.error("Erro ao cadastrar usuário:", error.message);
+      alert("Ocorreu um erro ao cadastrar o usuário. Tente novamente.");
     }
   };
 
