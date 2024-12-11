@@ -5,6 +5,19 @@ from .database import Base
 
 
 class PartModels(Base):
+    """
+    Represents a part in the inventory database.
+
+    Attributes:
+        id (int): Unique identifier for the part.
+        name (str): Name of the part.
+        quantity (int): Quantity of the part available in inventory.
+        cost (float): Cost of the part.
+
+    Relationships:
+        used_parts: Relationship to `UsedPartModels` indicating parts used in maintenance.
+    """
+    
     __tablename__ = "parts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
