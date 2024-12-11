@@ -5,12 +5,19 @@ import { P, Large, H2 } from "~/components/ui/typography";
 import { Separator } from "~/components/ui/separator";
 import { CardContent } from "~/components/ui/card";
 import MaintenanceDialog from "~/components/MaintenanceDialog";
-import { Machine } from "~/data/mock_machines";
 import { Button } from "./ui/button";
 import { router } from "expo-router";
 
 interface MachineDetailProps {
-  machineData: Machine;
+  machineData: {
+    id: number;
+    name: string;
+    type: string;
+    local: string;
+    serial_number: string;
+    fabrication_date: string;
+    status: string;
+  };
   from: string;
 }
 
@@ -21,31 +28,23 @@ export default function MachineDetail({
   const MACHINE_IMAGE_URI =
     "https://sweetco.com.br/wp-content/uploads/2023/01/CAFE-Aulika-350x350.png";
 
-  if (!machineData) {
-    return (
-      <View className="h-full w-full justify-center">
-        <Text className="self-center">Erro: Máquina não encontrada!</Text>
-      </View>
-    );
-  }
-
   return (
     <View className="py-2 px-4 h-full w-full gap-4 bg-secondary/30">
       <View className="flex-row justify-between">
         <View>
           {from === "pending" && <H2>{machineData.name}</H2>}
           <P className="font-semibold">
-            Modelo: <P className="font-normal">{machineData.model}</P>
+            Modelo: <P className="font-normal">{machineData.type}</P>
           </P>
           <P className="font-semibold">
-            Localização: <P className="font-normal">{machineData.location}</P>
+            Localização: <P className="font-normal">{machineData.local}</P>
           </P>
           <P className="font-semibold">
-            Série: <P className="font-normal">{machineData.serialNumber}</P>
+            Série: <P className="font-normal">{machineData.serial_number}</P>
           </P>
           <P className="font-semibold">
             Fabricação:{" "}
-            <P className="font-normal">{machineData.fabricationDate}</P>
+            <P className="font-normal">{machineData.fabrication_date}</P>
           </P>
         </View>
         <Image
@@ -54,9 +53,9 @@ export default function MachineDetail({
         />
       </View>
 
-      {from === "maintenance" && machineData.status === "Pendente" && (
+      {/* {from === "maintenance" && machineData.status === "Pendente" && (
         <MaintenanceDialog machineData={machineData} />
-      )}
+      )} */}
 
       {from === "pending" && (
         <Button
@@ -72,7 +71,7 @@ export default function MachineDetail({
       )}
 
       <Large>Histórico de Manutenção:</Large>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ gap: 6 }}>
+      {/* <ScrollView showsVerticalScrollIndicator={false} style={{ gap: 6 }}>
         {machineData.maintenanceHistory.map((history, index) => (
           <View key={index}>
             <CardContent className="p-2">
@@ -96,7 +95,7 @@ export default function MachineDetail({
             />
           </View>
         ))}
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 }
