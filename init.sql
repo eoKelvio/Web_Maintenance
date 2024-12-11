@@ -18,9 +18,10 @@ CREATE TABLE IF NOT EXISTS parts (
 CREATE TABLE IF NOT EXISTS machines (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
-  description TEXT,
-  price DECIMAL(10,2) NOT NULL,
-  quantity INT NOT NULL
+  type VARCHAR(255),
+  local VARCHAR(255),
+  fabrication_date DATE,
+  serial_number VARCHAR(255)
 );
 
 \c maintenances_db
