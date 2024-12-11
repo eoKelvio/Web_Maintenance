@@ -15,9 +15,7 @@ const createUser = async (data: any) => {
 
 const getUsers = async () => {
   try {
-    console.log("teste")
     const response = await axios.get(`${API_URL}/users/`);
-    console.log(response.data)
     return response.data;
   } catch (error: any) {
     console.error('Erro ao coletar(s) o usuário(s):', error.message);
