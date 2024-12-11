@@ -10,11 +10,9 @@ const getData = async () => {
   try {
     const response = await getUsers();
     console.log("Usuário(s) coletado(s) com sucesso:", response);
-    alert("Usuário(s) coletado(s) com sucesso!");
     return response;
   } catch (error: any) {
     console.error("Erro ao coletar(s) o usuário(s):", error.message);
-    alert("Ocorreu um erro ao coletar(s) o usuário(s).");
   }
 };
 
