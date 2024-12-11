@@ -5,6 +5,22 @@ from ..database import Base
 
 
 class UserModels(Base):
+    """
+    Represents a user in the database.
+
+    Attributes:
+        id (int): Unique identifier for the user.
+        name (str): Name of the user.
+        username (str): Unique username of the user.
+        password (str): Encrypted password of the user.
+        role (str): Role of the user (e.g., admin, member).
+        team_id (int): ID of the team the user belongs to.
+
+    Relationships:
+        team (TeamModels): The team to which the user belongs.
+        led_team (TeamModels): The team led by the user.
+    """
+    
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

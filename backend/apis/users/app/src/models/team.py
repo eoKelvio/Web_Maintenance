@@ -5,6 +5,19 @@ from ..database import Base
 
 
 class TeamModels(Base):
+    """
+    Represents a team in the database.
+
+    Attributes:
+        id (int): Unique identifier for the team.
+        name (str): Name of the team.
+        leader_id (int): ID of the user who is the leader of the team.
+
+    Relationships:
+        leader (UserModels): Reference to the leader of the team.
+        user (UserModels): List of users who are members of the team.
+    """
+    
     __tablename__ = "teams"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
