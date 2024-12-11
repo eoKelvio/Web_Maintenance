@@ -5,7 +5,8 @@ app = FastAPI()
 
 # Configurar os domínios permitidos
 origins = [
-    "http://localhost:3000",  # Origem do seu frontend
+    "http://localhost:3000",
+    "http://localhost:8081",   # Origem do seu frontend
     "http://127.0.0.1:3000",  # Origem alternativa do frontend
     # Adicione outros domínios permitidos, se necessário
 ]
