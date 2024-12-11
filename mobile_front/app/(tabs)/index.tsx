@@ -13,8 +13,7 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(`Erro: ${response.status}`);
       }
-      const data = await response.json(); // Converte a resposta para JSON
-      console.log("Dados recebidos:", data); // Exibe os dados no console
+      alert("200 - connection api");
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
