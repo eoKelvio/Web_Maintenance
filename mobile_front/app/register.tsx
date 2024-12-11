@@ -52,7 +52,7 @@ export default function RegisterScreen() {
           value={username}
           onChangeText={setUsername}
         />
-        <Input placeholder="Area" value={role} onChangeText={setRole} />
+        <Input placeholder="Função" value={role} onChangeText={setRole} />
         <Input
           textContentType="password"
           placeholder="Senha"
