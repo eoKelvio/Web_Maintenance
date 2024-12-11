@@ -3,18 +3,20 @@ import { Users, columns } from "./columns";
 import { DataTable } from "./data-table";
 import UserRegister from "@/components/users/UserRegister";
 import axios from "axios";
+import { getUsers } from "@/services/UserService";
 
 
-// Função simulada para obter dados de users
-async function getData(){
+const getData = async () => {
   try {
-    const response = await axios.get("http://localhost:9999/users/");
-    return response.data; // Retorna apenas os dados da resposta
-  } catch (error:any) {
-    console.error("Erro ao buscar dados:", error.message);
-    throw error; // Repassa o erro para ser tratado pelo chamador
+    const response = await getUsers();
+    console.log("Usuário(s) coletado(s) com sucesso:", response);
+    alert("Usuário(s) coletado(s) com sucesso!");
+    return response;
+  } catch (error: any) {
+    console.error("Erro ao coletar(s) o usuário(s):", error.message);
+    alert("Ocorreu um erro ao coletar(s) o usuário(s).");
   }
-}
+};
 
 export default async function UsersControl() {
   const data = await getData();

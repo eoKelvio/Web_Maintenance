@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { createUser } from '@/components/users/service/UserService';
+import { createUser } from '@/services/UserService';
 
 export default function UserRegister() {
   const [formData, setFormData] = useState({
