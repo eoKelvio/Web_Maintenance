@@ -12,12 +12,36 @@ router = APIRouter(prefix="/Teams")
 
 @router.get("/", response_model=list[TeamResponse])
 async def get_all_Teams(db: Session = Depends(get_db)):
+    """
+    Retrieve all teams from the database.
+
+    Args:
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        list[TeamResponse]: A list of all teams in the database.
+    """
+
     Teams = db.query(TeamModels).all()
     return Teams
 
 
 @router.post("/", response_model=TeamResponse)
 async def create_team(data: TeamRequest, db: Session = Depends(get_db)):
+    """
+    Create a new team in the database.
+
+    Args:
+        data (TeamRequest): The data for the team to be created.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        TeamResponse: The newly created team.
+
+    Raises:
+        HTTPException: If the team name already exists or if the leader does not exist.
+    """
+
     # Verifica se já existe um time com o mesmo nome
     existing_team = db.query(TeamModels).filter(TeamModels.name == data.name).first()
     if existing_team:
@@ -29,7 +53,7 @@ async def create_team(data: TeamRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Leader ID does not exist")
 
     try:
-        team_data = data.model_dump()  # Ajuste se você não estiver usando Pydantic v2
+        team_data = data.model_dump()
         team = save_to_db(db, TeamModels, team_data)
         return team
 
@@ -40,6 +64,20 @@ async def create_team(data: TeamRequest, db: Session = Depends(get_db)):
 
 @router.get("/{Team_id}", response_model=TeamResponse)
 async def get_Team(Team_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve a team by its ID.
+
+    Args:
+        Team_id (int): ID of the team to retrieve.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        TeamResponse: The team with the given ID.
+
+    Raises:
+        HTTPException: If the team is not found.
+    """
+    
     Team = db.query(TeamModels).get(Team_id)
     if Team is None:
         raise HTTPException(status_code=404, detail="Team not found")
@@ -48,6 +86,21 @@ async def get_Team(Team_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{Team_id}", response_model=TeamResponse)
 async def update_Team(Team_id: int, data: TeamRequest, db: Session = Depends(get_db)):
+    """
+    Update an existing team in the database.
+
+    Args:
+        Team_id (int): ID of the team to update.
+        data (TeamRequest): The updated data for the team.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        TeamResponse: The updated team.
+
+    Raises:
+        HTTPException: If the team is not found, the name already exists, or a database error occurs.
+    """
+
     Team = db.query(TeamModels).get(Team_id)
     if Team is None:
         raise HTTPException(status_code=404, detail="Team not found")
@@ -78,6 +131,20 @@ async def update_Team(Team_id: int, data: TeamRequest, db: Session = Depends(get
 
 @router.delete("/{Team_id}", response_model=dict)
 async def delete_Team(Team_id: int, db: Session = Depends(get_db)):
+    """
+    Delete a team by its ID.
+
+    Args:
+        Team_id (int): ID of the team to delete.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        dict: A confirmation message indicating successful deletion.
+
+    Raises:
+        HTTPException: If the team is not found or a database error occurs.
+    """
+    
     Team = db.query(TeamModels).get(Team_id)
     if Team is None:
         raise HTTPException(status_code=404, detail="Team not found")

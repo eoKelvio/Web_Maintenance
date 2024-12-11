@@ -11,12 +11,36 @@ router = APIRouter(prefix="/users")
 
 @router.get("/", response_model=list[UserResponse])
 async def get_all_users(db: Session = Depends(get_db)):
+    """
+    Retrieve all users from the database.
+
+    Args:
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        list[UserResponse]: A list of all users in the database.
+    """
+
     users = db.query(UserModels).all()
     return users
 
 
 @router.post("/", response_model=UserResponse)
 async def create_user(data: UserRequest, db: Session = Depends(get_db)):
+    """
+    Create a new user in the database.
+
+    Args:
+        data (UserRequest): The data for the user to be created.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        UserResponse: The newly created user.
+
+    Raises:
+        HTTPException: If the username already exists or a database error occurs.
+    """
+
     existing_user = db.query(UserModels).filter(UserModels.username == data.username).first()
     if existing_user:
         raise HTTPException(status_code=409, detail="Username already exists")
@@ -33,6 +57,20 @@ async def create_user(data: UserRequest, db: Session = Depends(get_db)):
 
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user(user_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve a user by their ID.
+
+    Args:
+        user_id (int): ID of the user to retrieve.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        UserResponse: The user with the given ID.
+
+    Raises:
+        HTTPException: If the user is not found.
+    """
+
     user = db.query(UserModels).get(user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -41,6 +79,21 @@ async def get_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{user_id}", response_model=UserResponse)
 async def update_user(user_id: int, data: UserRequest, db: Session = Depends(get_db)):
+    """
+    Update an existing user in the database.
+
+    Args:
+        user_id (int): ID of the user to update.
+        data (UserRequest): The updated data for the user.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        UserResponse: The updated user.
+
+    Raises:
+        HTTPException: If the user is not found, the username already exists, or a database error occurs.
+    """
+
     user = db.query(UserModels).get(user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -65,6 +118,20 @@ async def update_user(user_id: int, data: UserRequest, db: Session = Depends(get
 
 @router.delete("/{user_id}", response_model=UserResponse)
 async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    """
+    Delete a user by their ID.
+
+    Args:
+        user_id (int): ID of the user to delete.
+        db (Session): Active database session, provided by dependency injection.
+
+    Returns:
+        dict: A confirmation message indicating successful deletion.
+
+    Raises:
+        HTTPException: If the user is not found or a database error occurs.
+    """
+    
     user = db.query(UserModels).get(user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
