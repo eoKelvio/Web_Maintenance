@@ -27,17 +27,20 @@ CREATE TABLE IF NOT EXISTS machines (
 \c maintenances_db
 CREATE TABLE IF NOT EXISTS maintenances (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  description TEXT,
-  price DECIMAL(10,2) NOT NULL,
-  quantity INT NOT NULL
+  machine_id INT NOT NULL,
+  date DATE NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  priority VARCHAR(255) NOT NULL,
+  team_id INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS used_parts(
     id SERIAL PRIMARY KEY,
     maintenance_id INT NOT NULL,
     part_id INT NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    cost DECIMAL(10,2)
 );
 
 \c users_db
