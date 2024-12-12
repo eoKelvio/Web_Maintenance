@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const url = "http://10.109.3.89:9999";
+export const url = "your.url.back:and";
