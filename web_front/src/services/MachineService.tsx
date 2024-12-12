@@ -41,4 +41,25 @@ const deleteMachines = async (machineId: any) => {
   }
 };
 
-export { createMachines, getMachines, deleteMachines };
+const updateMachine = async (machineId: number, data: any) => {
+  try {
+    const response = await axios.put(`${API_URL}/machines/${machineId}`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Erro ao atualizar a máquina:", error.message);
+    throw error;
+  }
+};
+
+const getMachineById = async (machineId: number) => {
+  try {
+    const response = await axios.get(`${API_URL}/machines/${machineId}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Erro ao obter os dados da máquina:", error.message);
+    throw error;
+  }
+};
+
+
+export { createMachines, getMachines, deleteMachines, updateMachine, getMachineById };

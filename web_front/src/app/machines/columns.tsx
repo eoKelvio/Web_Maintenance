@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,9 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import axios from "axios"  // Importando o axios
 import { deleteMachines } from "@/services/MachineService"
-import { machine } from "os"
+import MachineEdit from "@/components/machine/machine-edit"
 
 // Tipo que define o formato dos dados da máquina.
 export type Machine = {
@@ -58,36 +58,35 @@ export const columns: ColumnDef<Machine>[] = [
   {
     id: "actions",
     enableHiding: false,
+    header: "Ações", // Adicionando título para a coluna de Ações
     cell: ({ row }) => {
       const machineId = row.original.id
+      const [isEditing, setIsEditing] = useState(false) // Controlando a exibição do editor
 
       const handleDelete = async () => {
-        // Confirmar com o usuário antes de excluir
         const confirmDelete = window.confirm("Você tem certeza que deseja excluir esta máquina?")
-        if (!confirmDelete) 
-          return
+        if (!confirmDelete) return
         deleteMachines(machineId)
       }
 
+      const handleEdit = () => {
+        setIsEditing(true) // Ativa o editor
+      }
+
+      const closeEditor = () => {
+        setIsEditing(false) // Fecha o editor
+      }
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Opções</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(String(machineId))}
-            >
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete}>Excluir</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <MachineEdit machineId={(machineId)} />
+
+          {/* Coluna de Ações: Botão Excluir */}
+          <Button variant="ghost" onClick={handleDelete}>
+            Excluir
+          </Button>
+
+        </>
       )
     },
   },
