@@ -135,7 +135,6 @@ export function DataTable<TData extends { id: string }, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => router.push(`stock/item/${row.original.id}`)} // Redireciona com o ID
                   className="cursor-pointer hover:bg-gray-600"
                 >
                   {row.getVisibleCells().map((cell) => (
