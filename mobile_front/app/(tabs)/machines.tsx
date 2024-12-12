@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { Input } from "~/components/ui/input";
 import { Card, CardTitle, CardContent, CardHeader } from "~/components/ui/card";
-import { machines } from "~/data/mock_machines";
 import { router } from "expo-router";
 import { Muted } from "~/components/ui/typography";
 import { useColorScheme } from "~/lib/useColorScheme";
-import { MachineDetailParams } from "~/data/types";
+import { getMachines } from "~/lib/api/machines";
+
+interface Machine {
+  id: number;
+  name: string;
+  type: string;
+  local: string;
+  fabrication_date: string;
+  serial_number: string;
+  status: string; // Adicionado apenas para exibição
+}
 
 export default function MachinesScreen() {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState("");
+  const [machines, setMachines] = useState<Machine[]>([]);
   const colorScheme = useColorScheme();
+
+  // Fetch machines from backend
+  useEffect(() => {
+    const fetchMachines = async () => {
+      try {
+        const data = await getMachines();
+        // Adicionando um status padrão para cada máquina
+        const machinesWithStatus = data.map((machine: any) => ({
+          ...machine,
+          status: "Rodando", // Status padrão
+        }));
+        setMachines(machinesWithStatus);
+      } catch (error) {
+        console.error("Erro ao carregar máquinas:", error);
+      }
+    };
+
+    fetchMachines();
+  }, []);
 
   // Get color based on machine status and color scheme
   const getStatusColor = (status: string) => {
@@ -45,39 +74,42 @@ export default function MachinesScreen() {
         contentContainerClassName="gap-3"
         showsVerticalScrollIndicator={false}
       >
-        {machines.map((machine, index) => (
-          <Card
-            key={index}
-            onTouchEndCapture={() =>
-              router.push({
-                pathname: "/machine_detail",
-                params: {
-                  machine: JSON.stringify(machine),
-                  title: machine.name,
-                  status: machine.status,
-                } as MachineDetailParams,
-              })
-            }
-          >
-            <CardHeader className="flex flex-row justify-between">
-              <CardTitle>{machine.serialNumber}</CardTitle>
-              <Muted
-                style={{
-                  color: getStatusColor(machine.status),
-                }}
-              >
-                {machine.status}
-              </Muted>
-            </CardHeader>
-            <CardContent>
-              <Text>Nome: {machine.name}</Text>
-              <View className="flex-row justify-between">
-                <Text>Localização: {machine.location}</Text>
-                <Muted>Detalhes</Muted>
-              </View>
-            </CardContent>
-          </Card>
-        ))}
+        {machines
+          .filter((machine) =>
+            machine.name.toLowerCase().includes(value.toLowerCase())
+          )
+          .map((machine, index) => (
+            <Card
+              key={index}
+              onTouchEndCapture={() =>
+                router.push({
+                  pathname: "/machine_detail",
+                  params: {
+                    title: machine.name,
+                    id: machine.id.toString(),
+                  },
+                })
+              }
+            >
+              <CardHeader className="flex flex-row justify-between">
+                <CardTitle>{machine.serial_number}</CardTitle>
+                <Muted
+                  style={{
+                    color: getStatusColor(machine.status),
+                  }}
+                >
+                  {machine.status}
+                </Muted>
+              </CardHeader>
+              <CardContent>
+                <Text>Nome: {machine.name}</Text>
+                <View className="flex-row justify-between">
+                  <Text>Localização: {machine.local}</Text>
+                  <Muted>Detalhes</Muted>
+                </View>
+              </CardContent>
+            </Card>
+          ))}
       </ScrollView>
     </View>
   );

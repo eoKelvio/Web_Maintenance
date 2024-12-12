@@ -30,7 +30,7 @@ export default function DashCards() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <View className="p-4 flex-1">
+    <View className="p-4">
       <Text className="text-xl font-bold text-primary text-left pl-2">
         Estatísticas
       </Text>
