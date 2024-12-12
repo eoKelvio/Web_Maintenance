@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -11,19 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ArrowUpDown } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
 
 // Tipo que define o formato dos dados da máquina.
 export type Machine = {
-  id: string
+  id: number
   name: string
   type: string
-  model: string
-  serialNumber: string
-  manufacturingDate: string
-  location: string
-  maintenanceHistory: string[]
+  fabrication_date: string
+  local: string
+  serial_number: string
 }
 
 export const columns: ColumnDef<Machine>[] = [
@@ -46,41 +42,23 @@ export const columns: ColumnDef<Machine>[] = [
     header: "Tipo",
   },
   {
-    accessorKey: "model",
-    header: "Modelo",
-  },
-  {
-    accessorKey: "serialNumber",
-    header: "Número de Série",
-  },
-  {
-    accessorKey: "manufacturingDate",
+    accessorKey: "fabrication_date",
     header: "Data de Fabricação",
   },
   {
-    accessorKey: "location",
-    header: "Localização",
+    accessorKey: "local",
+    header: "Local",
   },
   {
-    accessorKey: "maintenanceHistory",
-    header: "Histórico de Manutenção",
-    cell: ({ row }) => {
-      const maintenanceHistory = row.getValue("maintenanceHistory") as string[]
-      return (
-        <ul>
-          {maintenanceHistory.map((entry: string, index: number) => (
-            <li key={index}>{entry}</li>
-          ))}
-        </ul>
-      )
-    },
+    accessorKey: "serial_number",
+    header: "Número de Série",
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const machineId = row.original.id
-  
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -92,7 +70,7 @@ export const columns: ColumnDef<Machine>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Opções</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(machineId)}
+              onClick={() => navigator.clipboard.writeText(String(machineId))}
             >
               Editar
             </DropdownMenuItem>
@@ -102,5 +80,5 @@ export const columns: ColumnDef<Machine>[] = [
         </DropdownMenu>
       )
     },
-  },  
+  },
 ]
