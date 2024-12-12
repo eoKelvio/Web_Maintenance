@@ -1,5 +1,4 @@
 "use client"
-
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,6 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import axios from "axios"  // Importando o axios
+import { deleteMachines } from "@/services/MachineService"
+import { machine } from "os"
 
 // Tipo que define o formato dos dados da máquina.
 export type Machine = {
@@ -59,6 +61,14 @@ export const columns: ColumnDef<Machine>[] = [
     cell: ({ row }) => {
       const machineId = row.original.id
 
+      const handleDelete = async () => {
+        // Confirmar com o usuário antes de excluir
+        const confirmDelete = window.confirm("Você tem certeza que deseja excluir esta máquina?")
+        if (!confirmDelete) 
+          return
+        deleteMachines(machineId)
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -75,7 +85,7 @@ export const columns: ColumnDef<Machine>[] = [
               Editar
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Excluir</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete}>Excluir</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
