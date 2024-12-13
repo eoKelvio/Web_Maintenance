@@ -54,9 +54,6 @@ export function TeamCard({ team }: TeamCardProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter>
-        <TeamMaintenance />
-      </CardFooter>
     </Card>
   );
 }

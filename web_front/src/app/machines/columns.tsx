@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, ArrowUpDown } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -83,7 +83,7 @@ export const columns: ColumnDef<Machine>[] = [
 
           {/* Coluna de Ações: Botão Excluir */}
           <Button variant="ghost" onClick={handleDelete}>
-            Excluir
+          <Trash/>
           </Button>
 
         </>

@@ -85,7 +85,9 @@ export default function LoginPage() {
           />
 
           {/* Botão para Enviar o Formulário */}
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" onClick={() => {
+              router.push("/");
+            }}>
             Entrar
           </Button>
 

@@ -136,10 +136,10 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  onClick={() => {
-                    const id = (row.original as { id: string | number }).id;
-                    router.push(`/maintenance/${id}`);
-                  }}
+                  // onClick={() => {
+                  //   const id = (row.original as { id: string | number }).id;
+                  //   router.push(`/maintenance/${id}`);
+                  // }}
                   className="cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
