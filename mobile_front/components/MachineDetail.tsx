@@ -8,7 +8,8 @@ import MaintenanceDialog from "~/components/MaintenanceDialog";
 import { Button } from "./ui/button";
 import { router } from "expo-router";
 import { getMaintenances } from "~/lib/api/maintenances";
-import { getParts } from "~/lib/api/parts";
+import { getParts } from "~/lib/api/used_parts";
+import { getTeamById } from "~/lib/api/teams";
 
 interface MachineDetailProps {
   machineData: {
@@ -40,6 +41,12 @@ interface Part {
   cost: number;
 }
 
+interface Team {
+  id: number;
+  name: string;
+  leader_id: number;
+}
+
 export default function MachineDetail({
   machineData,
   from,
@@ -53,6 +60,10 @@ export default function MachineDetail({
   const [partsByMaintenance, setPartsByMaintenance] = useState<
     Record<number, Part[]>
   >({});
+  const [teamsByMaintenance, setTeamsByMaintenance] = useState<
+    Record<number, Team>
+  >({});
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -67,13 +78,25 @@ export default function MachineDetail({
 
         // Fetch parts for each maintenance
         const partsData: Record<number, Part[]> = {};
+        const teamsData: Record<number, Team> = {};
+
         for (const maintenance of machineMaintenances) {
+          // Fetch parts
           const parts = await getParts(maintenance.id);
           partsData[maintenance.id] = parts;
+
+          // Fetch team
+          const team = await getTeamById(maintenance.team_id);
+          teamsData[maintenance.id] = team;
         }
+
         setPartsByMaintenance(partsData);
+        setTeamsByMaintenance(teamsData);
       } catch (error) {
-        console.error("Erro ao buscar dados de manutenção e peças:", error);
+        console.error(
+          "Erro ao buscar dados de manutenção, peças e equipes:",
+          error
+        );
       } finally {
         setLoading(false);
       }
@@ -130,16 +153,22 @@ export default function MachineDetail({
               <CardContent className="p-2">
                 <Text className="font-bold">{history.date}</Text>
                 <Text className="text-muted-foreground">
-                  Realizado por: {history.team_id}
+                  Realizado por:{" "}
+                  {teamsByMaintenance[history.id]?.name ||
+                    "Equipe não encontrada"}
                 </Text>
                 <Text>{history.description}</Text>
                 <View className="mt-2">
                   <Text className="font-bold">Materiais Usados:</Text>
-                  {partsByMaintenance[history.id]?.map((part) => (
-                    <Text key={part.id} className="pl-4">
-                      {part.id} - {part.quantity}
-                    </Text>
-                  )) || <Text>Nenhum material usado registrado.</Text>}
+                  {partsByMaintenance[history.id]?.length > 0 ? (
+                    partsByMaintenance[history.id].map((part) => (
+                      <Text key={part.id} className="pl-4">
+                        {part.id} - {part.quantity}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text>Nenhum material usado registrado.</Text>
+                  )}
                 </View>
               </CardContent>
               <Separator
