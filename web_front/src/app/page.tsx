@@ -13,8 +13,8 @@ import { Table,
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex-grow container mx-auto">
-        <h1>COMING SOON</h1>
+      <div className="flex-grow container mx-auto h-full">
+        <h1 className="text-center font-bold text-4xl mt-40">Bem vindo a aplicação da nossa Fábrica</h1>
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export default function MachineRegister() {
     console.log(formData);
     try {
       const response = await createMachines(formData);
-      alert("Usuário cadastrado com sucesso!");
+      alert("Máquina cadastrado com sucesso!");
     } catch (error) {
       console.error("Erro ao cadastrar máquina:", error);
       alert("Erro ao cadastrar máquina");

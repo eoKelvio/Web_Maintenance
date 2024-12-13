@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Trash, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,18 +11,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown } from "lucide-react";
+import { useState } from "react";
+import { deleteMaintenance } from "@/services/MaintenanceService";
+import { useRouter } from "next/navigation";
 
-// Tipo que define o formato dos dados da máquina.
+// Tipo que define o formato dos dados de manutenção.
 export type Maintenance = {
-  id: string;
-  priority: string;
-  responsability: string;
-  solicitation: string;
+  id: number;
+  machine_id: number;
+  date: string; // Data da solicitação
   status: string;
   description: string;
-  type: string;
-  img: string;
+  priority: string;
+  team_id: number;
 };
 
 export const columns: ColumnDef<Maintenance>[] = [
@@ -41,52 +42,68 @@ export const columns: ColumnDef<Maintenance>[] = [
     },
   },
   {
-    accessorKey: "priority",
-    header: "Prioridade",
+    accessorKey: "description",
+    header: "Descrição",
   },
   {
-    accessorKey: "responsability",
-    header: "Responsável",
-  },
-  {
-    accessorKey: "solicitation",
-    header: "Data de Solicitação",
+    accessorKey: "date",
+    header: "Data",
   },
   {
     accessorKey: "status",
     header: "Status",
   },
   {
-    accessorKey: "description",
-    header: "Descrição",
+    accessorKey: "priority",
+    header: "Prioridade",
   },
-
+  {
+    accessorKey: "details",
+    header: "Detalhes",
+    cell: ({ row }: { row: any }) => {
+      const router = useRouter();
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => router.push(`maintenance/${row.original.id}`)}
+        >
+          <ExternalLink/>
+        </Button>
+      );
+    },
+  },
   {
     id: "actions",
-    enableHiding: false,
+    header: "Ações", // Adicionando título para a coluna de Ações
     cell: ({ row }) => {
-      const machineId = row.original.id;
+      const partId = row.original.id
+      const [isEditing, setIsEditing] = useState(false) // Controlando a exibição do editor
+
+      const handleDelete = async () => {
+        const confirmDelete = window.confirm("Você tem certeza que deseja excluir essa manutenção?")
+        if (!confirmDelete) return
+        deleteMaintenance(partId)
+      }
+
+      const handleEdit = () => {
+        setIsEditing(true) // Ativa o editor
+      }
+
+      const closeEditor = () => {
+        setIsEditing(false) // Fecha o editor
+      }
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Opções</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(machineId)}
-            >
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Excluir</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+        <>
+          {/* <StockEdit stockId={(partId)} /> */}
+
+          {/* Coluna de Ações: Botão Excluir */}
+          <Button variant="ghost" onClick={handleDelete}>
+            <Trash/>
+          </Button>
+
+        </>
+      )
     },
   },
 ];

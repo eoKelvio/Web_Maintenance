@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { updateMachine, getMachineById } from "@/services/MachineService"; 
+import { Edit } from "lucide-react";
 
 type MachineEditProps = {
   machineId: number;
@@ -74,7 +75,7 @@ export default function MachineEdit({ machineId }: MachineEditProps) {
       <DialogTrigger
         asChild
       >
-        <Button variant="ghost">Editar</Button>
+        <Button variant="ghost"><Edit/></Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
