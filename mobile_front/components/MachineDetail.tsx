@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, Image } from "react-native";
 import { Text } from "~/components/ui/text";
 import { P, Large, H2 } from "~/components/ui/typography";
@@ -7,6 +7,9 @@ import { CardContent } from "~/components/ui/card";
 import MaintenanceDialog from "~/components/MaintenanceDialog";
 import { Button } from "./ui/button";
 import { router } from "expo-router";
+import { getMaintenances } from "~/lib/api/maintenances";
+import { getParts } from "~/lib/api/used_parts";
+import { getTeamById } from "~/lib/api/teams";
 
 interface MachineDetailProps {
   machineData: {
@@ -21,12 +24,86 @@ interface MachineDetailProps {
   from: string;
 }
 
+interface MaintenanceHistory {
+  id: number;
+  machine_id: number;
+  date: string;
+  description: string;
+  priority: string;
+  status: string;
+  team_id: number;
+}
+
+interface Part {
+  id: number;
+  name: string;
+  quantity: number;
+  cost: number;
+}
+
+interface Team {
+  id: number;
+  name: string;
+  leader_id: number;
+}
+
 export default function MachineDetail({
   machineData,
   from,
 }: MachineDetailProps) {
   const MACHINE_IMAGE_URI =
     "https://sweetco.com.br/wp-content/uploads/2023/01/CAFE-Aulika-350x350.png";
+
+  const [maintenanceHistory, setMaintenanceHistory] = useState<
+    MaintenanceHistory[]
+  >([]);
+  const [partsByMaintenance, setPartsByMaintenance] = useState<
+    Record<number, Part[]>
+  >({});
+  const [teamsByMaintenance, setTeamsByMaintenance] = useState<
+    Record<number, Team>
+  >({});
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMaintenanceData = async () => {
+      try {
+        const maintenances = await getMaintenances();
+        const machineMaintenances = maintenances.filter(
+          (maintenance: MaintenanceHistory) =>
+            maintenance.machine_id === machineData.id
+        );
+        setMaintenanceHistory(machineMaintenances);
+
+        // Fetch parts for each maintenance
+        const partsData: Record<number, Part[]> = {};
+        const teamsData: Record<number, Team> = {};
+
+        for (const maintenance of machineMaintenances) {
+          // Fetch parts
+          const parts = await getParts(maintenance.id);
+          partsData[maintenance.id] = parts;
+
+          // Fetch team
+          const team = await getTeamById(maintenance.team_id);
+          teamsData[maintenance.id] = team;
+        }
+
+        setPartsByMaintenance(partsData);
+        setTeamsByMaintenance(teamsData);
+      } catch (error) {
+        console.error(
+          "Erro ao buscar dados de manutenção, peças e equipes:",
+          error
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMaintenanceData();
+  }, [machineData.id]);
 
   return (
     <View className="py-2 px-4 h-full w-full gap-4 bg-secondary/30">
@@ -53,10 +130,6 @@ export default function MachineDetail({
         />
       </View>
 
-      {/* {from === "maintenance" && machineData.status === "Pendente" && (
-        <MaintenanceDialog machineData={machineData} />
-      )} */}
-
       {from === "pending" && (
         <Button
           onPress={() => {
@@ -71,31 +144,41 @@ export default function MachineDetail({
       )}
 
       <Large>Histórico de Manutenção:</Large>
-      {/* <ScrollView showsVerticalScrollIndicator={false} style={{ gap: 6 }}>
-        {machineData.maintenanceHistory.map((history, index) => (
-          <View key={index}>
-            <CardContent className="p-2">
-              <Text className="font-bold">{history.date}</Text>
-              <Text className="text-muted-foreground">
-                Realizado por: {history.performedBy}
-              </Text>
-              <Text>{history.description}</Text>
-              <View className="mt-2">
-                <Text className="font-bold">Materiais Usados:</Text>
-                {history.materialsUsed.map((material, materialIndex) => (
-                  <Text key={materialIndex} className="pl-4">
-                    {material.material} - {material.quantity}
-                  </Text>
-                ))}
-              </View>
-            </CardContent>
-            <Separator
-              orientation="horizontal"
-              className="bg-secondary-foreground/40"
-            />
-          </View>
-        ))}
-      </ScrollView> */}
+      {loading ? (
+        <Text>Carregando histórico...</Text>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false} style={{ gap: 6 }}>
+          {maintenanceHistory.map((history) => (
+            <View key={history.id}>
+              <CardContent className="p-2">
+                <Text className="font-bold">{history.date}</Text>
+                <Text className="text-muted-foreground">
+                  Realizado por:{" "}
+                  {teamsByMaintenance[history.id]?.name ||
+                    "Equipe não encontrada"}
+                </Text>
+                <Text>{history.description}</Text>
+                <View className="mt-2">
+                  <Text className="font-bold">Materiais Usados:</Text>
+                  {partsByMaintenance[history.id]?.length > 0 ? (
+                    partsByMaintenance[history.id].map((part) => (
+                      <Text key={part.id} className="pl-4">
+                        {part.id} - {part.quantity}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text>Nenhum material usado registrado.</Text>
+                  )}
+                </View>
+              </CardContent>
+              <Separator
+                orientation="horizontal"
+                className="bg-secondary-foreground/40"
+              />
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }
