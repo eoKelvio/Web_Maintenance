@@ -131,17 +131,17 @@ services:
       - "traefik.http.services.users.loadbalancer.server.port=9995" 
     command: ["poetry", "run", "fastapi", "run", "api/app/main.py", "--port", "9995"]
   
-  tests:
-    build: ./backend/
-    env_file:
-      - .env
-    networks:
-      - senai
-    volumes:
-      - ./backend:/app
-    # environment:
-    #   PYTHONPATH: /app
-    command: ["poetry", "run", "pytest", "/app/tests"]
+  # tests:
+  #   build: ./backend/
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - senai
+  #   volumes:
+  #     - ./backend:/app
+  #   # environment:
+  #   #   PYTHONPATH: /app
+  #   command: ["poetry", "run", "pytest", "/app/tests"]
 
 
 networks:

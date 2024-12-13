@@ -21,10 +21,8 @@ class MaintenanceResponse(BaseModel):
 class UsedPartRequest(BaseModel):
     part_id: int
     quantity: int
-    cost: float
 
 class UsedPartResponse(BaseModel):
     id: int
     part_id: int
     quantity: int
-    cost: float

@@ -1,9 +1,8 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { DatePickerDemo } from "@/components/date-picker";
 import {
   Dialog,
   DialogClose,
@@ -13,9 +12,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { createMachines } from "@/services/MachineService";
+import { updateMachine, getMachineById } from "@/services/MachineService"; 
 
-export default function MachineRegister() {
+type MachineEditProps = {
+  machineId: number;
+};
+
+export default function MachineEdit({ machineId }: MachineEditProps) {
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -23,6 +26,27 @@ export default function MachineRegister() {
     serial_number: "",
     local: "",
   });
+
+  useEffect(() => {
+    // Carregar os dados da máquina com base no ID
+    const fetchMachineData = async () => {
+      try {
+        const response = await getMachineById(machineId);
+        setFormData({
+          name: response.name,
+          type: response.type,
+          fabrication_date: response.fabrication_date,
+          serial_number: response.serial_number,
+          local: response.local,
+        });
+      } catch (error) {
+        console.error("Erro ao carregar dados da máquina:", error);
+        alert("Erro ao carregar dados da máquina");
+      }
+    };
+
+    fetchMachineData();
+  }, [machineId]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -34,13 +58,14 @@ export default function MachineRegister() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
     try {
-      const response = await createMachines(formData);
-      alert("Usuário cadastrado com sucesso!");
+      const response = await updateMachine(machineId, formData); // Atualizando a máquina
+      alert("Máquina atualizada com sucesso!");
+      window.location.reload()
+
     } catch (error) {
-      console.error("Erro ao cadastrar máquina:", error);
-      alert("Erro ao cadastrar máquina");
+      console.error("Erro ao atualizar a máquina:", error);
+      alert("Erro ao atualizar a máquina");
     }
   };
 
@@ -48,14 +73,13 @@ export default function MachineRegister() {
     <Dialog>
       <DialogTrigger
         asChild
-        className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-accent"
       >
-        <Button variant="outline">Cadastrar Máquina</Button>
+        <Button variant="ghost">Editar</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Cadastro de Máquina</DialogTitle>
-          <DialogDescription>Faça cadastro de máquinas novas</DialogDescription>
+          <DialogTitle>Edição de Máquina</DialogTitle>
+          <DialogDescription>Edite as informações da máquina</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
@@ -75,16 +99,11 @@ export default function MachineRegister() {
                 onChange={handleInputChange}
               />
               <Label htmlFor="fabrication_date">Fabricação</Label>
-              <DatePickerDemo
-                onDateChange={(date) => {
-                  const formattedDate = date
-                    ? new Date(date).toISOString().split("T")[0] // Formata para yyyy-mm-dd
-                    : "";
-                  setFormData({
-                    ...formData,
-                    fabrication_date: formattedDate,
-                  });
-                }}
+              <Input
+                id="type"
+                placeholder="Data de fabricação"
+                value={formData.fabrication_date}
+                onChange={handleInputChange}
               />
               <Label htmlFor="serial_number">Serial</Label>
               <Input
@@ -104,12 +123,12 @@ export default function MachineRegister() {
           </div>
           <div className="container mx-auto flex justify-between mt-4">
             <DialogClose asChild>
-              <Button variant="outline" size="lg">
+              <Button variant="ghost" size="lg">
                 Cancelar
               </Button>
             </DialogClose>
             <Button type="submit" size="lg">
-              Cadastrar
+              Atualizar
             </Button>
           </div>
         </form>

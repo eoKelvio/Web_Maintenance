@@ -1,7 +1,7 @@
 "use client"
-
+import { useState } from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -11,19 +11,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ArrowUpDown } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
+import { deleteMachines } from "@/services/MachineService"
+import MachineEdit from "@/components/machine/machine-edit"
 
 // Tipo que define o formato dos dados da máquina.
 export type Machine = {
-  id: string
+  id: number
   name: string
   type: string
-  model: string
-  serialNumber: string
-  manufacturingDate: string
-  location: string
-  maintenanceHistory: string[]
+  fabrication_date: string
+  local: string
+  serial_number: string
 }
 
 export const columns: ColumnDef<Machine>[] = [
@@ -46,61 +44,50 @@ export const columns: ColumnDef<Machine>[] = [
     header: "Tipo",
   },
   {
-    accessorKey: "model",
-    header: "Modelo",
-  },
-  {
-    accessorKey: "serialNumber",
-    header: "Número de Série",
-  },
-  {
-    accessorKey: "manufacturingDate",
+    accessorKey: "fabrication_date",
     header: "Data de Fabricação",
   },
   {
-    accessorKey: "location",
-    header: "Localização",
+    accessorKey: "local",
+    header: "Local",
   },
   {
-    accessorKey: "maintenanceHistory",
-    header: "Histórico de Manutenção",
-    cell: ({ row }) => {
-      const maintenanceHistory = row.getValue("maintenanceHistory") as string[]
-      return (
-        <ul>
-          {maintenanceHistory.map((entry: string, index: number) => (
-            <li key={index}>{entry}</li>
-          ))}
-        </ul>
-      )
-    },
+    accessorKey: "serial_number",
+    header: "Número de Série",
   },
   {
     id: "actions",
     enableHiding: false,
+    header: "Ações", // Adicionando título para a coluna de Ações
     cell: ({ row }) => {
       const machineId = row.original.id
-  
+      const [isEditing, setIsEditing] = useState(false) // Controlando a exibição do editor
+
+      const handleDelete = async () => {
+        const confirmDelete = window.confirm("Você tem certeza que deseja excluir esta máquina?")
+        if (!confirmDelete) return
+        deleteMachines(machineId)
+      }
+
+      const handleEdit = () => {
+        setIsEditing(true) // Ativa o editor
+      }
+
+      const closeEditor = () => {
+        setIsEditing(false) // Fecha o editor
+      }
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Opções</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(machineId)}
-            >
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Excluir</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <MachineEdit machineId={(machineId)} />
+
+          {/* Coluna de Ações: Botão Excluir */}
+          <Button variant="ghost" onClick={handleDelete}>
+            Excluir
+          </Button>
+
+        </>
       )
     },
-  },  
+  },
 ]
