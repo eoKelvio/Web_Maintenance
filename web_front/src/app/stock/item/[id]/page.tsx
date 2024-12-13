@@ -12,77 +12,67 @@ export default function DetailsPage({ params }: { params: { id: string } }) {
 
   const mockData = [
     {
-      id: "001",
-      name: "Filtro de Óleo",
-      code: "FO-1234",
+      id: "1",
+      name: "Parafuso M10",
+      code: "PA-1234",
       supplier: "Fornecedor A",
-      quantity: 20,
-      unitPrice: "R$ 50,00",
-      moviment: [
-        {
-          type: true,
-          date: "01/01/0001",
-          quantity: 10,
-        },
-        {
-          type: false,
-          date: "02/02/0001",
-          quantity: 10,
-        },
-        {
-          type: true,
-          date: "03/03/0001",
-          quantity: 25,
-        },
-      ],
-    },
-    {
-      id: "002",
-      name: "Correia Dentada",
-      code: "CD-5678",
-      supplier: "Fornecedor B",
-      quantity: 15,
-      unitPrice: "R$ 120,00",
-      moviment: [
-        {
-          type: true,
-          date: "01/01/0001",
-          quantity: 10,
-        },
-        {
-          type: false,
-          date: "02/02/0001",
-          quantity: 10,
-        },
-        {
-          type: true,
-          date: "03/03/0001",
-          quantity: 25,
-        },
-      ],
-    },
-    {
-      id: "003",
-      name: "Pastilha de Freio",
-      code: "PF-9101",
-      supplier: "Fornecedor C",
       quantity: 50,
-      unitPrice: "R$ 30,00",
+      unitPrice: "R$ 0,25",
       moviment: [
         {
           type: true,
-          date: "01/01/0001",
+          date: "01/01/2024",
           quantity: 10,
         },
         {
           type: false,
-          date: "02/02/0001",
+          date: "02/01/2024",
           quantity: 10,
         },
         {
           type: true,
-          date: "03/03/0001",
-          quantity: 25,
+          date: "03/03/2024",
+          quantity: 50,
+        },
+      ],
+    },
+    {
+      id: "2",
+      name: "Filtro de Óleo",
+      code: "FO-5678",
+      supplier: "Fornecedor B",
+      quantity: 20,
+      unitPrice: "R$ 15,50",
+      moviment: [
+        {
+          type: true,
+          date: "01/01/2024",
+          quantity: 15,
+        },
+        {
+          type: false,
+          date: "02/02/2024",
+          quantity: 10,
+        },
+        {
+          type: true,
+          date: "03/03/2024",
+          quantity: 15,
+        },
+      ],
+    },
+    {
+      id: "3",
+      name: "Correia de Transmissão",
+      code: "CO-9101",
+      supplier: "Fornecedor C",
+      quantity: 10,
+      unitPrice: "R$ 35,00",
+      moviment: [
+        {
+          type: true,
+          date: "12/12/2024",
+          quantity: 10,
         },
       ],
     },
