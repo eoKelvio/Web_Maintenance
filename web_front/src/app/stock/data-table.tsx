@@ -31,12 +31,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 
-interface DataTableProps<TData extends { id: string }, TValue> { // Garante que TData tenha 'id'
+interface DataTableProps<TData extends { id: number }, TValue> { // Garante que TData tenha 'id'
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData extends { id: string }, TValue>({
+export function DataTable<TData extends { id: number }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -135,7 +135,6 @@ export function DataTable<TData extends { id: string }, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => router.push(`stock/item/${row.original.id}`)} // Redireciona com o ID
                   className="cursor-pointer hover:bg-gray-600"
                 >
                   {row.getVisibleCells().map((cell) => (
