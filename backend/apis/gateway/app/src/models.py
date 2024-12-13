@@ -5,6 +5,14 @@ from .database import Base
 
 
 class MachineModels(Base):
+    """
+    Model representing machine authentication details.
+
+    Attributes:
+        username (str): The username used for authentication.
+        password (str): The password associated with the username.
+    """
+    
     __tablename__ = "auths"
 
     username: Mapped[str] = mapped_column(String, primary_key=True)
