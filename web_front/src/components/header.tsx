@@ -62,6 +62,11 @@ export default function Header() {
                 <MenubarTrigger>Estoque</MenubarTrigger>
               </Link>
             </MenubarMenu>
+            <MenubarMenu>
+              <Link href="/users">
+                <MenubarTrigger>Usuários</MenubarTrigger>
+              </Link>
+            </MenubarMenu>
           </Menubar>
           <Menubar>
             <MenubarMenu>
