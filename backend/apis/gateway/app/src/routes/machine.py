@@ -8,6 +8,16 @@ MACHINE_SERVICE_URL = "http://machines:9997/machines"
 
 @router.get("/", response_model=list[dict])
 async def get_all_machines():
+    """
+    Retrieve all machines from the machine microservice.
+
+    Returns:
+        list[dict]: A list of machines.
+
+    Raises:
+        HTTPException: If the machine microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{MACHINE_SERVICE_URL}/")
     if response.status_code != 200:
@@ -16,6 +26,19 @@ async def get_all_machines():
 
 @router.post("/")
 async def create_machine(data: dict):
+    """
+    Create a new machine in the machine microservice.
+
+    Args:
+        data (dict): The machine data to create.
+
+    Returns:
+        dict: The created machine.
+
+    Raises:
+        HTTPException: If the machine name already exists or if the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todas as máquinas
         machineResponse = await client.get(f"{MACHINE_SERVICE_URL}/")
@@ -35,6 +58,19 @@ async def create_machine(data: dict):
     
 @router.get("/{machine_id}")
 async def get_user(machine_id: int):
+    """
+    Retrieve a specific machine by ID from the machine microservice.
+
+    Args:
+        machine_id (int): The ID of the machine to retrieve.
+
+    Returns:
+        dict: The machine data.
+
+    Raises:
+        HTTPException: If the machine is not found or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
 
         response = await client.get(f"{MACHINE_SERVICE_URL}/{machine_id}")
@@ -48,6 +84,19 @@ async def get_user(machine_id: int):
     
 @router.put("/{machine_id}")
 async def update_machine(machine_id: int, data: dict):
+    """
+    Update a specific machine by ID in the machine microservice.
+
+    Args:
+        machine_id (int): The ID of the machine to update.
+        data (dict): The updated machine data.
+
+    Returns:
+        dict: The updated machine data.
+
+    Raises:
+        HTTPException: If the machine ID or name is invalid, or the microservice responds with an error.
+    """
     async with httpx.AsyncClient() as client:
         # Verificar máquinas existentes
         machine_response = await client.get(f"{MACHINE_SERVICE_URL}/")
@@ -78,6 +127,19 @@ async def update_machine(machine_id: int, data: dict):
     
 @router.delete("/{machine_id}")
 async def delete_user(machine_id: int):
+    """
+    Delete a specific machine by ID in the machine microservice.
+
+    Args:
+        machine_id (int): The ID of the machine to delete.
+
+    Returns:
+        dict: A message indicating the deletion status.
+
+    Raises:
+        HTTPException: If the machine is not found or the microservice responds with an error.
+    """
+    
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todos os usuários
         response = await client.get(f"{MACHINE_SERVICE_URL}/")

@@ -10,6 +10,16 @@ USER_SERVICE_URL = "http://users:9995/users"
 
 @router.get("/", response_model=list[dict])
 async def get_all_teams():
+    """
+    Retrieve all teams from the team microservice.
+
+    Returns:
+        list[dict]: A list of teams.
+
+    Raises:
+        HTTPException: If the team microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{TEAM_SERVICE_URL}/")
     if response.status_code != 200:
@@ -18,6 +28,19 @@ async def get_all_teams():
 
 @router.post("/")
 async def create_team(data: dict):
+    """
+    Create a new team in the team microservice.
+
+    Args:
+        data (dict): The team data to create.
+
+    Returns:
+        dict: The created team.
+
+    Raises:
+        HTTPException: If the team name already exists, the leader ID does not exist, or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todos os times
         teamResponse = await client.get(f"{TEAM_SERVICE_URL}/")
@@ -46,6 +69,19 @@ async def create_team(data: dict):
 
 @router.get("/{team_id}")
 async def get_team(team_id: int):
+    """
+    Retrieve a specific team by ID from the team microservice.
+
+    Args:
+        team_id (int): The ID of the team to retrieve.
+
+    Returns:
+        dict: The team data.
+
+    Raises:
+        HTTPException: If the team is not found or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Fazer a requisição diretamente ao endpoint de busca por ID
         response = await client.get(f"{TEAM_SERVICE_URL}/{team_id}")
@@ -60,6 +96,20 @@ async def get_team(team_id: int):
 
 @router.put("/{team_id}")
 async def update_team(team_id: int, data: dict):
+    """
+    Update a specific team by ID in the team microservice.
+
+    Args:
+        team_id (int): The ID of the team to update.
+        data (dict): The updated team data.
+
+    Returns:
+        dict: The updated team data.
+
+    Raises:
+        HTTPException: If the team name already exists in another team, the leader ID does not exist, or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todos os times
         teamResponse = await client.get(f"{TEAM_SERVICE_URL}/")
@@ -89,6 +139,19 @@ async def update_team(team_id: int, data: dict):
 
 @router.delete("/{team_id}")
 async def delete_team(team_id: int):
+    """
+    Delete a specific team by ID in the team microservice.
+
+    Args:
+        team_id (int): The ID of the team to delete.
+
+    Returns:
+        dict: A message indicating the deletion status.
+
+    Raises:
+        HTTPException: If the team is not found or the microservice responds with an error.
+    """
+    
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todos os times
         response = await client.get(f"{TEAM_SERVICE_URL}/")

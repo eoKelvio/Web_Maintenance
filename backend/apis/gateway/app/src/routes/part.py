@@ -8,6 +8,16 @@ PART_SERVICE_URL = "http://parts:9998/parts"
 
 @router.get("/", response_model=list[dict])
 async def get_all_parts():
+    """
+    Retrieve all parts from the parts microservice.
+
+    Returns:
+        list[dict]: A list of parts.
+
+    Raises:
+        HTTPException: If the parts microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{PART_SERVICE_URL}/")
     if response.status_code != 200:
@@ -16,6 +26,19 @@ async def get_all_parts():
 
 @router.post("/")
 async def create_part(data: dict):
+    """
+    Create a new part in the parts microservice.
+
+    Args:
+        data (dict): The part data to create.
+
+    Returns:
+        dict: The created part.
+
+    Raises:
+        HTTPException: If the part name already exists or if the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todas as máquinas
         partResponse = await client.get(f"{PART_SERVICE_URL}/")
@@ -35,6 +58,19 @@ async def create_part(data: dict):
     
 @router.get("/{part_id}")
 async def get_part(part_id: int):
+    """
+    Retrieve a specific part by ID from the parts microservice.
+
+    Args:
+        part_id (int): The ID of the part to retrieve.
+
+    Returns:
+        dict: The part data.
+
+    Raises:
+        HTTPException: If the part is not found or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
 
         response = await client.get(f"{PART_SERVICE_URL}/{part_id}")
@@ -48,6 +84,20 @@ async def get_part(part_id: int):
     
 @router.put("/{part_id}")
 async def update_part(part_id: int, data: dict):
+    """
+    Update a specific part by ID in the parts microservice.
+
+    Args:
+        part_id (int): The ID of the part to update.
+        data (dict): The updated part data.
+
+    Returns:
+        dict: The updated part data.
+
+    Raises:
+        HTTPException: If the part ID or name is invalid, or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Verificar máquinas existentes
         part_response = await client.get(f"{PART_SERVICE_URL}/")
@@ -78,6 +128,19 @@ async def update_part(part_id: int, data: dict):
     
 @router.delete("/{part_id}")
 async def delete_part(part_id: int):
+    """
+    Delete a specific part by ID in the parts microservice.
+
+    Args:
+        part_id (int): The ID of the part to delete.
+
+    Returns:
+        dict: A message indicating the deletion status.
+
+    Raises:
+        HTTPException: If the part is not found or the microservice responds with an error.
+    """
+    
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todos os usuários
         response = await client.get(f"{PART_SERVICE_URL}/")
