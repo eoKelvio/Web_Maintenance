@@ -10,6 +10,21 @@ mapper_registry = registry()
 
 
 def save_to_db(db: Session, model, data):
+    """
+    Save a new object to the database.
+
+    Args:
+        db (Session): The database session instance.
+        model (Base): The SQLAlchemy model class.
+        data (dict): The data to initialize the model instance.
+
+    Returns:
+        object: The saved object with updated fields.
+
+    Raises:
+        Exception: If an error occurs while saving the object.
+    """
+
     try:
         db_obj = model(**data)
         db.add(db_obj)
@@ -22,6 +37,15 @@ def save_to_db(db: Session, model, data):
 
 
 def get_db():
+    """
+    Provide a database session to the caller.
+
+    Yields:
+        Session: An instance of the database session.
+
+    Ensures:
+        The session is properly closed after use.
+    """
     db = SessionLocal()
     try:
         yield db

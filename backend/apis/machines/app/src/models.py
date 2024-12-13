@@ -5,6 +5,18 @@ from .database import Base
 
 
 class MachineModels(Base):
+    """
+    Represents a machine entity in the database.
+
+    Attributes:
+        id (int): The primary key of the machine.
+        name (str): The name of the machine.
+        type (str): The type/category of the machine.
+        local (str): The location where the machine is situated.
+        fabrication_date (Date): The manufacturing date of the machine.
+        serial_number (str): The unique serial number of the machine.
+    """
+    
     __tablename__ = "machines"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

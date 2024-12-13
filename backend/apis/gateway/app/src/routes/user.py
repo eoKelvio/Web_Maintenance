@@ -10,6 +10,16 @@ TEAM_SERVICE_URL = "http://users:9995/teams"
 
 @router.get("/", response_model=list[dict])
 async def get_all_users():
+    """
+    Retrieve all users from the user microservice.
+
+    Returns:
+        list[dict]: A list of users.
+
+    Raises:
+        HTTPException: If the user microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{USER_SERVICE_URL}/")
     if response.status_code != 200:
@@ -18,6 +28,19 @@ async def get_all_users():
 
 @router.post("/")
 async def create_user(data: dict):
+    """
+    Create a new user in the user microservice.
+
+    Args:
+        data (dict): The user data to create.
+
+    Returns:
+        dict: The created user.
+
+    Raises:
+        HTTPException: If the team ID is invalid, the username already exists, or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Verificar times existentes
         team_response = await client.get(f"{TEAM_SERVICE_URL}/")
@@ -48,6 +71,19 @@ async def create_user(data: dict):
 
 @router.get("/{user_id}")
 async def get_user(user_id: int):
+    """
+    Retrieve a specific user by ID from the user microservice.
+
+    Args:
+        user_id (int): The ID of the user to retrieve.
+
+    Returns:
+        dict: The user data.
+
+    Raises:
+        HTTPException: If the user is not found or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
 
         response = await client.get(f"{USER_SERVICE_URL}/{user_id}")
@@ -62,6 +98,20 @@ async def get_user(user_id: int):
 
 @router.put("/{user_id}")
 async def update_user(user_id: int, data: dict):
+    """
+    Update a specific user by ID in the user microservice.
+
+    Args:
+        user_id (int): The ID of the user to update.
+        data (dict): The updated user data.
+
+    Returns:
+        dict: The updated user data.
+
+    Raises:
+        HTTPException: If the team ID is invalid, the username already exists for another user, or the microservice responds with an error.
+    """
+
     async with httpx.AsyncClient() as client:
         # Verificar times existentes
         team_response = await client.get(f"{TEAM_SERVICE_URL}/")
@@ -92,6 +142,19 @@ async def update_user(user_id: int, data: dict):
 
 @router.delete("/{user_id}")
 async def delete_user(user_id: int):
+    """
+    Delete a specific user by ID in the user microservice.
+
+    Args:
+        user_id (int): The ID of the user to delete.
+
+    Returns:
+        dict: A message indicating the deletion status.
+
+    Raises:
+        HTTPException: If the user is not found or the microservice responds with an error.
+    """
+    
     async with httpx.AsyncClient() as client:
         # Fazer o GET para buscar todos os usuários
         response = await client.get(f"{USER_SERVICE_URL}/")
