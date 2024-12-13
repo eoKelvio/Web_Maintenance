@@ -8,6 +8,10 @@ from .schemas import PartRequest, PartResponse
 
 router = APIRouter(prefix="/parts")
 
+@router.get("/", response_model=list[PartResponse])
+async def get_all_parts(db: Session = Depends(get_db)):
+    parts = db.query(PartModels).all()
+    return parts
 
 @router.post("/", response_model=PartResponse)
 async def create_part(data: PartRequest, db: Session = Depends(get_db)):
@@ -23,22 +27,7 @@ async def create_part(data: PartRequest, db: Session = Depends(get_db)):
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error saving to database: {str(e)}")
-    
-@router.post("/", response_model=PartResponse)
-async def create_part(data: PartRequest, db: Session = Depends(get_db)):
-    existing_part = db.query(PartModels).filter(PartModels.name == data.name).first()
-    if existing_part:
-        raise HTTPException(status_code=409, detail="Part name already exists")
-
-    try:
-        part_data = data.model_dump()
-        part = save_to_db(db, PartModels, part_data)
-        return part
-
-    except SQLAlchemyError as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error saving to database: {str(e)}")
-    
+        
 @router.get("/{part_id}")
 def get_part(part_id: int, db: Session = Depends(get_db)):
     part = db.query(PartModels).get(part_id)
@@ -68,3 +57,18 @@ def update_part(part_id: int, data: PartRequest, db: Session = Depends(get_db)):
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error updating part: {str(e)}")
+
+@router.delete("/{part_id}", response_model=dict)
+async def delete_part(part_id: int, db: Session = Depends(get_db)):
+    part = db.query(PartModels).get(part_id)
+    if part is None:
+        raise HTTPException(status_code=404, detail="Part not found")
+
+    try:
+        db.delete(part)
+        db.commit()
+        return {"message": "Part deleted successfully"}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error deleting part: {str(e)}")

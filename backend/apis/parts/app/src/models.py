@@ -11,5 +11,3 @@ class PartModels(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     cost: Mapped[float] = mapped_column(Integer, nullable=False)
-
-    used_parts: Mapped[str] = mapped_column(String, nullable=False)
