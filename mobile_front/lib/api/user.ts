@@ -6,7 +6,7 @@ interface User {
   username: string;
   password: string;
   role: string;
-  team_id: number;
+  team_id: number | null;
 }
 
 // Função para criar um novo usuário com fetch
