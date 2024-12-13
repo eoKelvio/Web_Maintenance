@@ -25,15 +25,15 @@ export default function RegisterScreen() {
       username,
       password,
       role,
-      team_id: 1,
+      team_id: null,
     };
 
     try {
       await createUser(newUser);
-      Alert.alert("Sucesso", "Usuário registrado com sucesso!");
+      alert("Sucesso - Usuário registrado com sucesso!");
       router.push("/(tabs)"); // Redireciona após o registro
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível registrar o usuário.");
+      alert("Erro - Não foi possível registrar o usuário.");
     }
   };
 
